@@ -99,9 +99,6 @@ while task.wait(MAIN_LOOP_DELAY) do
     for _, riftData in ipairs(RIFTS) do
         if isRiftValid(riftData.Name) then
             reportRift(riftData)
-            getgenv().autoPressR = true
-        else
-            getgenv().autoPressR = false
         end
     end
     hopServers()
