@@ -13,7 +13,6 @@ local RIFTS = {
     {Name = "FestiveRift", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V"}
 }
 local HOP_COOLDOWN = 5
-local TWEEN_SPEED = 50
 local MAIN_LOOP_DELAY = 5
 
 local isHopping = false
