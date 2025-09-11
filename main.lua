@@ -48,18 +48,17 @@ local function reportRift(riftData)
     local luck = rift.Display:FindFirstChild("Icon") and rift.Display.Icon:FindFirstChild("Luck") and rift.Display.Icon.Luck.Text or ""
 
     local playerCount = #Players:GetPlayers()
-    local maxPlayers = 12 -- or set dynamically if needed
+    local maxPlayers = 12 -- or dynamic if needed
     local height = math.floor(rift.Display.Position.Y)
-    local joinLink = string.format("roblox://experiences/start?placeId=%d&gameInstanceId=%s", game.PlaceId, game.JobId)
+    local joinLink = string.format("https://www.roblox.com/games/%d?gameId=%s", game.PlaceId, game.JobId)
 
     local embedFields = {
         {name="Found By", value=player.Name, inline=false},
         {name="Rift Height", value=height .. " meters", inline=false},
-        {name="Players", value=playerCount.."/"..maxPlayers, inline=false} -- Added player count
+        {name="Players", value=playerCount.."/"..maxPlayers, inline=false}
     }
     if luck ~= "" then table.insert(embedFields, {name="Luck", value=luck, inline=false}) end
     if discordTimestamp ~= "" then table.insert(embedFields, {name="Ends", value=discordTimestamp, inline=false}) end
-    table.insert(embedFields, {name="Direct Server Link", value="```\n"..joinLink.."\n```", inline=false})
 
     local payload = {
         embeds = {{
@@ -68,8 +67,18 @@ local function reportRift(riftData)
             color = 65280,
             fields = embedFields,
             footer = {text="Webhook v7.4"}
+        }},
+        components = {{
+            type = 1, -- Action row
+            components = {{
+                type = 2, -- Button
+                style = 5, -- Link style
+                label = "Click to Join",
+                url = joinLink
+            }}
         }}
     }
+
     sendWebhook(riftData.Webhook, payload)
 end
 
