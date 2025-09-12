@@ -76,7 +76,6 @@ task.spawn(function()
                     local nameLower = (rift.Name or ""):lower()
                     for _, riftData in ipairs(RIFTS) do
                         if riftData.Name and nameLower:find(riftData.Name:lower()) and not alreadyFound[rift.Name] then
-                            -- Rift detected, send webhook
                             local luckText, timerText, heightText = "N/A", "N/A", "N/A"
                             local minutes, seconds = 0, 0
 
