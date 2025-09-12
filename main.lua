@@ -105,6 +105,9 @@ local function hopServers()
 end
 
 task.spawn(function()
+    task.wait(2)
+    lastCheck = tick()
+
     while true do
         local foundRift = false
         local rendered = workspace:FindFirstChild("Rendered")
@@ -185,10 +188,10 @@ task.spawn(function()
             end
         end
 
-if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
-    hopServers()
-    lastCheck = tick()
-end
+        if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
+            hopServers()
+            lastCheck = tick()
+        end
 
         task.wait(1)
     end
