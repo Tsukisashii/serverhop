@@ -25,6 +25,10 @@ local function formatEggName(name)
     end)
 end
 
+local function normalize(name)
+    return (name or ""):lower():gsub("%W", "")
+end
+
 local function sendWebhook(url, payload)
     local body = HttpService:JSONEncode(payload)
 
@@ -107,10 +111,8 @@ task.spawn(function()
             local riftsFolder = rendered:FindFirstChild("Rifts")
             if riftsFolder then
                 for _, rift in ipairs(riftsFolder:GetChildren()) do
-                    local nameLower = (rift.Name or ""):lower()
-
                     for _, riftData in ipairs(RIFTS) do
-                        if riftData.Name and nameLower:find(riftData.Name:lower()) and not alreadyFound[rift.Name] then
+                        if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) and not alreadyFound[rift] then
                             foundRift = true
 
                             local luckText, timerText, heightText = "N/A", "N/A", "N/A"
@@ -139,7 +141,6 @@ task.spawn(function()
                                 end
                             end)
 
-                            -- get height
                             pcall(function()
                                 if rift.GetPivot then
                                     heightText = tostring(math.floor(rift:GetPivot().Position.Y)) .. " studs"
@@ -160,7 +161,7 @@ task.spawn(function()
                                     color = 0x00FF00,
                                     fields = {
                                         {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
-                                        {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>" .. "\nHeight: " .. heightText, inline = true},
+                                        {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
                                         {name = "🔗 Quick Join", value = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")", inline = false}
                                     },
                                     timestamp = DateTime.now():ToIsoDate()
@@ -168,9 +169,11 @@ task.spawn(function()
                             }
 
                             sendWebhook(riftData.Webhook, message)
+                            print("Webhook sent for:", rift.Name)
 
-                            alreadyFound[rift.Name] = true
-                            task.delay(300, function() alreadyFound[rift.Name] = nil end)
+                            alreadyFound[rift] = true
+                            task.delay(300, function() alreadyFound[rift] = nil end)
+
                             hopServers()
                         end
                     end
@@ -186,3 +189,4 @@ task.spawn(function()
         task.wait(1)
     end
 end)
+
