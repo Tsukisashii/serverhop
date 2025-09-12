@@ -26,37 +26,23 @@ local function formatEggName(name)
 end
 
 local function sendWebhook(url, payload)
-    local ok, body = pcall(function()
-        return game:GetService("HttpService"):JSONEncode(payload)
-    end)
-    if not ok then return false end
-
-    local success, res = pcall(function()
-        if syn and syn.request then
-            return syn.request({
-                Url = url,
-                Method = "POST",
-                Headers = { ["Content-Type"] = "application/json" },
-                Body = body
-            })
-        elseif request then
-            return request({
-                Url = url,
-                Method = "POST",
-                Headers = { ["Content-Type"] = "application/json" },
-                Body = body
-            })
-        else
-            -- fallback (usually won't work with Discord)
-            return game:GetService("HttpService"):PostAsync(url, body, Enum.HttpContentType.ApplicationJson)
-        end
-    end)
-
-    if success then
-        return true
+    local body = HttpService:JSONEncode(payload)
+    if syn and syn.request then
+        syn.request({
+            Url = url,
+            Method = "POST",
+            Headers = { ["Content-Type"] = "application/json" },
+            Body = body
+        })
+    elseif request then
+        request({
+            Url = url,
+            Method = "POST",
+            Headers = { ["Content-Type"] = "application/json" },
+            Body = body
+        })
     else
-        warn("Webhook failed:", res)
-        return false
+        warn("Cannot send webhook: your environment does not support request/syn.request")
     end
 end
 
