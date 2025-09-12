@@ -12,7 +12,7 @@ local RIFTS = {
 }
 
 local HOP_COOLDOWN = 5
-local IDLE_HOP_TIME = 5 -- hop if nothing in 3–5s
+local IDLE_HOP_TIME = 5
 local isHopping = false
 local alreadyFound = {}
 local lastCheck = tick()
@@ -105,7 +105,6 @@ local function hopServers()
     isHopping = false
 end
 
--- Rift scanner
 task.spawn(function()
     while true do
         local foundRift = false
@@ -181,14 +180,12 @@ task.spawn(function()
                         alreadyFound[rift.Name] = true
                         task.delay(300, function() alreadyFound[rift.Name] = nil end)
 
-                        -- hop right after sending webhook
                         hopServers()
                     end
                 end
             end
         end
 
-        -- hop if idle too long
         if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
             hopServers()
             lastCheck = tick()
