@@ -7,8 +7,8 @@ local workspace = game:GetService("Workspace")
 local player = Players.LocalPlayer
 
 local RIFTS = {
-    {Name = "spikey-egg", Webhook = "https://discord.com/api/webhooks/..."},
-    {Name = "FestiveRift", Webhook = "https://discord.com/api/webhooks/..."}
+    {Name = "spikey-egg", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V"},
+    {Name = "FestiveRift", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V"}
 }
 
 local HOP_COOLDOWN = 3
