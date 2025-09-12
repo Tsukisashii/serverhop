@@ -17,7 +17,6 @@ local MAIN_LOOP_DELAY = 5
 
 local isHopping = false
 
--- HTTP webhook sender
 local function sendWebhook(url, payload)
     if not url or url == "" then return end
     local body = HttpService:JSONEncode(payload)
@@ -28,7 +27,6 @@ local function sendWebhook(url, payload)
     end)
 end
 
--- Rift checker
 local function isRiftValid(riftName)
     local rift = workspace.Rendered.Rifts:FindFirstChild(riftName)
     return rift and rift:FindFirstChild("Display") and rift.Display:IsA("BasePart") and rift or nil
