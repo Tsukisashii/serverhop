@@ -11,8 +11,8 @@ local RIFTS = {
     {Name = "FestiveRift", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V"}
 }
 
-local HOP_COOLDOWN = 5
-local IDLE_HOP_TIME = 5
+local HOP_COOLDOWN = 3
+local IDLE_HOP_TIME = 3
 local isHopping = false
 local alreadyFound = {}
 local lastCheck = tick()
