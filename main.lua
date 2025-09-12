@@ -17,7 +17,6 @@ local isHopping = false
 local alreadyFound = {}
 local lastCheck = tick()
 
--- format egg names
 local function formatEggName(name)
     if not name then return "" end
     name = name:gsub("-", " ")
@@ -186,10 +185,10 @@ task.spawn(function()
             end
         end
 
-        if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
-            hopServers()
-            lastCheck = tick()
-        end
+if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
+    hopServers()
+    lastCheck = tick()
+end
 
         task.wait(1)
     end
