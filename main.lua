@@ -1,10 +1,8 @@
-local SERVER_LIST = {"727c72aa-78eb-4581-8497-75d92469dcd9","35760045-17ec-4752-99f8-d2d4612bb944","2a3be4e3-1bf4-4df6-b276-3221c0722cd3","48db0a6a-4430-4dbe-abfb-a21b1f563ce5","dd8ae21d-5bb7-415b-ab0b-3feb57cb76bb","5f651692-ad7c-498e-baab-3ee56f428b6f","db5dd2ba-9ca2-47f4-830b-3ef754923c74","ad7fa3f0-a092-4d3c-a7df-abd29505b375","850c3345-b667-4fb3-9d2a-dc39d2ac37a8","7c932bca-dd62-478c-868b-fdde99128c06","d4145eb9-48b1-4731-bb31-f09caff0282a","c0b20efe-befb-4f39-a3e6-e7d665741b0c","b090e418-1576-4b1d-b4f4-09f7cd6e03cc","e294a638-af7f-4ce1-9634-090f70d45a2e","b3b4721e-35cc-4010-9032-d6bc95ca965a","b31fa77b-7829-4675-b350-46011fb94d77","12e902b2-9329-4229-86fe-4825a8dfcdf8","305c674e-8efa-45a8-acac-b17eb689589d","2f5280ec-0f76-436a-bb92-896b39e84d97","8e4445b4-6aff-4da1-ae6e-71d93311a0da","e8163b22-a296-4b77-b10d-ab52f3de1080","8b5dc211-dd04-43e0-8e11-af7343aa397a","b1833373-9c96-4af6-aeb3-9fc0bcb9fdec","f0e4ee58-be60-4b4e-825e-4dcbd1637e44","99c7c82b-404d-44ad-a506-a6fbbb60a4a9","9f99e871-f7f1-42c5-88db-61f8792a557f","404d5f2c-868f-4657-812a-3fed441cc2a6","c1265433-16b6-4754-ac41-26e52b6a2564","dfa4d793-b0ac-4fd4-bbc2-611c5352f709","76606b1f-7396-43df-99e7-4f2c8b5db85f","9a0bb5e7-7b62-4640-b612-f419fbf6c7f6","05c448b3-e0a5-4f05-8abd-0b5228cec6a2","e7a6dcd6-5cc9-4e9b-8df6-3838096156f8","7e0fc922-4f31-49a8-857c-64c52ea8c10b","2e2be767-db37-40a8-afbc-2bc6ebe0516a","7d033ed6-840d-46d8-a92a-8c8aeeb4f702","f3b229ad-5313-4c87-a9ff-408a8ddcbdb1","86ad502f-b4b0-4720-9368-361805329d2c","62b6ef71-58cb-4892-ab0a-f7d516c121f5","e4bba7a5-b72a-47da-8d84-98c8c9a3a98c","d2981710-5ba3-40ca-80eb-6abde40a4610","2f75377e-c7f2-4e13-80a3-031bf9b8f3e9","2821e12f-0945-4999-ac0c-64a8c67e94f3","d19f32d2-9cbc-422c-a0c6-fa37a416c8e6","83c3730d-ba5b-44b9-96a4-af2b536281d5","2bc62c39-e052-4186-8133-16a909597b31","84e08a3f-61f4-4483-aecc-86674cd6999a","18c0e43a-93e6-4024-a34f-e4ed23e4a508","9ea48c65-7c42-44af-b6f0-a4df533f99f8","be52de02-7b37-48fa-bfbb-8d1b9331890b","871e3755-535c-417b-967e-22ca3e18c9e7","81c3e08f-2f5f-4b80-9b12-d4e6c6c40484","ab97ba9e-07fc-4048-8cf4-b4d673fb3c76","cd8b21f2-5cb0-4e63-9780-33b50a174f75","18f03af2-d486-47e0-b890-4790eecbbaad","a64cb7ff-aac6-4342-bab7-ee9ef3e1a620","4fe19ea6-312a-40b8-b0e9-14873992f55f","964806fb-4c7d-4485-84ec-58f416ce80af","5cf47aed-00e2-48a4-a015-8cc6db512471","47fbe387-89c0-4214-9660-fc0797258493","bac96d4c-0258-4f3d-bcde-57bedc3c8a81","a68e3ca9-6392-4ae7-8e8c-1e7ce735ac76","bbca9313-2e24-43bf-be1b-e394070bed14","b62a29e3-bc35-4db6-b3d6-2c81bf5b4301","b9ca32d7-0906-45b6-87f0-df00e27ec06a","809d9376-a1cf-401e-9d53-b380a19782ad","adeb3e30-69a7-4441-9c27-56ded810a4b6","08d883f9-90e3-406f-b0e7-b2fdac78dc9a","7e389029-7071-46e8-9789-8177d5f1c7cd","2fc2ece2-bb13-4444-ba53-5e96e16264f2","bed498a7-a732-414a-bbf0-40eca328f8c8","889e29b2-7555-447c-871e-ad02834924c0","7f3d2e2d-ed00-422e-9798-dc10ff429908","330c5e15-2bf9-4ca2-b1db-29cfaf04bb3a","7ced16ad-1ebd-4171-a9a4-690da88e19db","288cb027-4415-4ddb-996d-2a6849343f54","bef75bc7-9a90-4889-ab4a-d0c09e5b9223","e3074a8a-ab2d-4f64-bdfc-e9c468535a58","1bd32f88-318d-4732-af56-7639bf9b09ca","9e5ac886-b702-4a39-b107-30d72c29e690","c9c62d3b-0d26-4334-91d1-445cf293a384","54a0892d-535a-431b-bd83-76a3f85b545d","4a7ef20a-fa36-4441-bb2d-f91f6c61f45c","02cf3ce9-f86c-4af5-b199-389d5c477265","21ded04c-d628-4b7d-a45f-6aff0cb46754","e334d52a-a368-42a4-bfd3-ee64b2e967c1","a8c5c502-6eea-4c02-9023-352cfa933e8f","1cb87e6e-9c72-47e0-90b2-f5fd669c029f","2139e030-e4fb-48ea-acd3-88ed5dca4e87","2dc765a3-e752-4a7c-9ea4-f7a4f04e4899","e447cb08-1b3b-41ac-93aa-9bb08ecf6610","d7144168-13f5-438b-8658-5a5a2f8c2806","ba98438e-17fa-4f04-9ad2-413d6ffbde16","97988d72-b365-4998-ba91-6543bdfb87e1","99bf5e3f-fafa-48b8-b2f4-85d82c7fabf7","2c6d32a9-877b-43a9-be2f-a15d14d27c23","29918d84-3b3d-4932-8acc-72dc10b270e3","24b95fc6-dd45-461e-8af7-96e95cbeda95","91e59c51-4b93-4dfa-b4e6-99173c391dda","b2d21e22-63ff-4f51-8bc4-235c82389579","1828b59e-025f-49be-8b26-3e3281104330","c2eda29b-9ebb-4b48-89e9-187dda6950fc","312eaa43-edd7-480b-a472-ff7e85de5982","180c5e4c-1144-44a4-9690-9afe78437f8a","a9bf6327-83c1-4f84-afa5-08a68c58134f","543a84a8-79d9-4866-9a20-f4ed01d82379","975c89c8-4af7-488e-b538-a48b515a7ebd","55911b90-2caa-435e-9b07-df462083ea3a","03c00c87-db79-463b-9d43-30b66d17bb47","a43e86f4-f41d-4d5a-885c-d5afbcfd512c","b4456ce1-a76c-496b-90af-8743ba7794cd","44c1924f-5601-4eb0-af6b-218174fd1d0c","c8214f65-5924-4ca6-9e39-5e8cb99db73b","4f616af8-1fa9-43ff-9530-6f61a49619af","fd7bfc0e-f8a2-4f71-b4e5-badd634be263","6ae69377-813f-4d9e-b7db-2135018f88d7","a14bb51f-ed43-486a-a70d-209c92d0ad6e","8131735d-358a-41c9-ac45-d73575c22e01","ab64912e-06af-49e8-a35b-ce595a8aadd9","c765eed1-e8f5-45db-b85a-1a184b29c106","9c6d08c6-7cb9-46c6-8edc-2f9d2a79e736","ecad33e8-3ecf-4086-a483-572da31d6bb3","b9abf532-5353-4a9c-865a-eb9dfc6d27dd","d94eb325-3976-4d41-9233-759e15071695","633c1727-b227-47d8-b94d-6f7c52987a67","71f6d266-e97f-4ad9-bec6-e9db417e7d6b","bcfa5399-d65b-43b3-8a5c-0f63f109eb89","c983f95c-2d89-410c-ad30-c7874630f9dd","6e6f850c-4029-4080-ae45-1b3e1f964a4e","1e91c909-4ec4-4e50-96a3-3697156d2941","3fc949e0-9684-415c-b95a-d93212a3c2ca","b3d8d4fb-a2ff-4529-b122-f7e0fddd08a9","400a0cee-46a6-482c-8853-408e519cd716","8894c2d2-7a10-4efc-aa87-b4a281d6032d","05642c7b-2079-4250-a4c7-f28f8915a30c","823ba21d-3540-48d5-b0f9-b9163c36cc2b","d44a2c72-e139-4c40-b961-aa3b09b07f26","15a31289-90d5-4cbb-8ca4-2cb4569db96c","72b19bb2-e05f-4db3-bab2-a47e73eefe7f","36459e69-c2ca-410d-8aa9-eddebec8f60c","e806d670-d3f7-45e3-87d8-237001472396","8fce7aa2-4f8e-4efc-998b-03b8bb19bbdd","75299f40-aef3-464d-9289-f0586f7f1ea7","9df5713b-7623-4285-97de-03419d742373","9acacd1f-632c-470f-98ce-51387d7eb134","f18ace3b-5845-469d-aaf0-939e73882772","ff6a3609-bb39-46b2-a824-5a9098a74422","50671e86-90e3-495d-a371-6c035a3d4c88","20b63a07-c6a3-493c-80a4-d8bad00d81d3","9d057fbd-752f-4a75-8080-2c75820f9455","45862178-412f-4e7b-aa97-6c5b7fc7344f","3693dd53-3ea2-4afa-a0c5-f49a643ac3d9","59e96573-791d-4e4d-b8a0-1a000728c9ef","c14d7052-4725-41c3-8903-a6cf4af52645","d7cff224-5e71-4f28-944a-1f9e2770eedc","3bb279cc-aee7-495e-89e7-88fddba48ca0","35045937-f430-41b3-b857-94aaf95118a0","0d402736-5d2d-45b6-9529-89fcdcc3979d","0e63dbf1-0e45-42cd-95d1-49c2724e20b9","933af6b9-f0d8-4850-846b-369fbc7fe391","9a0b5d80-031c-4b95-b418-1aef61fc0e94","d39f346f-0a69-4f78-aecc-a9a478ef4f52","bc8c43c6-61eb-46ae-9063-adacb08f0001","b556bf5a-1c07-47a0-8ae2-1a61ed4d2ba5","59698d27-ae3f-4cbe-8771-1092727ba4c5","6c429cde-1f8e-45c7-9faf-12913cd155b6","341c9d8c-01e1-42c8-a7a2-499016b89175","78894b3f-9ff9-439e-9e46-b925f95ec156","01dc3b9e-8558-4e15-bb67-92455e05ac85","615df011-caa9-43d0-89a9-a5fc316bdafd","bd348794-482c-45a6-aa98-9c482d2e9203","2f7134ba-e24f-4632-86a6-510522ba7b8b","1eea52ba-1c98-4d92-bba1-33936f36dfd6","00dba41e-eb04-4da9-97a9-b53f857c2021","37ae86ed-a6ca-4d1b-a5f3-d2b11d7c07d7","b365d2b7-1c0c-4667-8adf-39ee382bd700","20986e51-47e5-4dc3-9aca-f45a0688a811","51c3f2ee-de46-4fb8-aa4a-36ad2fa15b16","829555f8-3ed0-4914-b2b7-2a2624a84a3e","4d6a7ff8-b082-40eb-9cc7-26d59ac45d72","ce94f9af-4306-4616-b4e3-e82b8ca36d68","fd3436f0-0ba0-4409-b001-2958beb1e560","56cac8b4-60c7-4a98-9871-7eacf165733c","b831ebcd-c89d-401a-906d-16201646ecc2","9d11b2ae-93d2-4932-8bb0-f6f555636a4d","b6e520b8-952e-4b79-b1df-e9d0d1caaeda","30476acf-8ad1-48f9-b27a-c4fe9364cae1","87f3aa1b-c4e5-42fb-a88b-ff8c1279f9a2","f1b235a9-822b-4556-91ff-484a99b69045","9fb28a67-c305-43c3-8527-73242de5e33a","570bb653-baf0-4bb5-b5fc-293f0d4c3962","44a96518-c99a-44cc-aa27-c0dafd1a5195","be825be5-eefe-497d-aa4f-91f8b5b2bbc2","5e15ec36-20c0-4786-8296-904cc56844a2","68445c17-ba99-4068-a362-1e2ea3f429a9","20fa4517-3059-4def-9e1d-998abaf26b81","e3b206aa-15bc-48ba-bfa7-5e8881d5928e","60601d0d-5cf6-44fc-b852-ed70de7a60d0","be061671-a315-4694-919c-a18582494660","f3b43268-6aff-4891-8865-0369fe80bd3a","cda43840-d47a-4991-8aa9-5d593ae31d14","e44069c0-88ae-4704-9d34-8cef65547c52","d6bd56df-d241-4760-b512-205fa7320aae","6471e181-37d4-4604-a405-2f5a1ce8de53","fafb52d1-f12e-4f50-9d9f-2b41dce1bbb6","77724797-0a31-4888-a783-97b36bcb0077","6986a81a-714a-4ad1-9a6c-4251f5364e10","d707542d-74e3-408d-80a4-a9ae5a24c071","147d709b-63cb-4e55-b586-cfcf3fc6bbb9","8ee971da-933e-43c4-be8f-77b25b5e6634","1c140f63-0deb-4117-b8aa-049af867fc4e","1bb4e683-8c95-413b-b398-15005a1fe734","72991d45-a188-40ae-9199-2c011617eda5","98658166-64fc-4234-b07b-1f3dbcd6434b","78a6cb8e-c65a-4238-a6c3-1cd5c7df2e4b","93c9627c-3bc3-4c51-8873-6fb576daafe5","8fa074b9-5d20-46ab-bd31-80eddc01053d","55c3242a-be9d-422b-ad32-47060902f3b0","b16760cf-fe7a-4f4f-a93b-320bc1cef1b6","d0741de3-6e3f-44ef-83ad-178a57b17a85","efa05e14-48a6-4e30-9b3a-b2bae51efd51","b21800dc-fe09-4686-983c-a19ff405173b","90fdf071-058b-4cf5-ba74-70183cc31fdf","66239c8b-dc7d-4453-9d27-aab2e5576ebc","f016b121-f87d-4e5d-879b-257e69f737b2","70be5e41-bdc0-449d-bef7-c8bf6559f4fb","ce569c74-c66c-4c8f-806a-f89f412ca593","e3006491-f3a2-4f94-8f1e-7c8239a20f92","01eda9a2-d4b6-4c3a-beea-eb3d6e6641b4","863d4ec7-7b2b-4a15-8a1d-8e13a61525f7","b893aa2d-c8bc-4ad0-af41-744c665b3e31","98299a0c-28c8-4276-a353-8865c5679d5d","865e9f35-022c-4294-8b90-8b6082726a8a","a139e35f-83c5-49e5-9b2d-8ed7ca68e013","d33b365d-ccc1-4423-9d9d-aa28268b9685","b415cf16-a7ff-4729-9db8-12f771735637","af481a8b-1686-4369-85a3-832564b9459e","934a7b56-1c27-438c-8b20-a522111bccc3","4fd751cb-b92b-4490-98df-11ea1b635e24","f6c93d06-c14b-4fa8-b3ec-7d4726b9cb93","b332a1fb-f595-43d0-b6e1-f1433e02f165","31610dec-0ead-4f5d-9b8f-23138b6ebe61","11ea80d9-331b-455f-95d8-b1359f5ffe8f","1d4acc3b-4fb6-4054-ba39-4441b32fb97d","816cc79e-2dc7-417a-9323-fa629db8b89f","78e5aa7a-ac37-4970-98d6-7e337b219c53","7b5aa195-ee46-4ed4-aa37-8f3f651a6256","3333a966-e2e3-49a2-a562-496b07199efe","32cc4ad1-fc0d-4380-ac96-9cae66bad751","f258da98-788d-46fe-97f4-9a837969ee93","7ba0c080-3bfb-47b1-9fd3-df34f3566887","9c9c5d38-a5e4-48e3-aecc-972374fe8d37","fa795f32-a226-4109-8598-1c8364699118","5bc0414a-185b-4b3b-af65-135c952ffaaf","6997ff7f-183f-4315-86d1-07452edeca6e","28a5a265-db81-4382-825d-f16021d2291e","8941b4a6-37b2-4c7f-a9aa-1b10e1772982","857169fe-848d-418d-bd78-f1428c554f17","4c75d014-803d-4bd6-aed0-6271bb1e304f","66d99d55-c29c-439c-87f3-ab2a969aeaf5","25039426-ad39-4f52-b0ff-e9b5d76485a1","0627c6f9-cb10-4a58-a6f1-7aa23ca85d1b","57d7e9ce-d799-4323-9705-5c21af026b78","3c3075d8-598b-4c35-9e15-6949bf51f1cd","4a420ab2-37b6-43a4-a207-7b51048d0396","f7207222-b87a-4a21-a0f6-edbaf44af6a8","72a1afbe-6663-4499-8cf0-9fb8b5d56db1","fc14e977-2bc7-4d6c-8d67-8376d13b3be7","b825bd20-7943-4aee-bf41-6a33fe063f94","347d5c10-f1d0-449b-a6d5-b13524e81b3e","846741b4-2fc6-4867-9e87-4d5592f9dc41","4dc86b2b-6623-4b70-a58d-f286f1c811bd","430e7fd6-9ac8-4ad6-be70-d6cf550ddce3","d033a483-795c-4177-9e2f-af668a01ac28","15f1a6c3-d84f-43a7-adff-5a8f5a8f43e8","a5725fd2-3046-4178-a468-166e7c619b40","bc2365c0-3c80-4b25-adfb-a6148781ccd6","5c3c23dc-9f4c-4da7-82b2-05f2fa50eb57","c1c9ccd0-a2b2-452d-b616-33ccaac28f42","9773b408-ed67-42dc-81e9-a45d559338ae","f0d35163-7f98-4d9e-8ade-54842d914172","24fbf44e-0eca-4a8b-9284-665be75c9cea","9dc89b96-bbe5-4e73-9131-4e31cea210c0","c7cf2bb0-6ef3-4012-a9ab-547d8e42fcee","d15b7fc0-7594-4afa-969a-3483c83a259f","a2f5454a-dc4f-48e6-8329-b56641953c07","21a75707-b9c9-480a-a4d9-2f0ff8d72485","8bb63dfb-08d6-486e-a85f-2cafc27ffac5","2d7f1c24-8bb9-4fd8-b32b-24e278801045","39e432e0-9419-4aab-bf77-23c99b824631","c6b2bd0d-0bab-4de4-8f87-1f5241b7fab1","429abff7-c4b5-463c-a474-20b225e9fb40","f102ab1d-6d98-458f-8f0a-8b261791203c","8540d3dc-a23f-4f70-8b14-13923efefb23","461c54f9-4aaa-491c-badc-9992ae9183a6","264c6815-2007-40da-ba2b-590b16324875","b072677b-2b45-455b-9be7-2fc5903cdc7c","396747a4-84e9-4f31-ba9c-c3d67a5d8e0f","a047ae67-324a-4976-864f-f614246d969d","2adbb2bb-7353-488f-b0ae-56d1a66b8e81","870328ab-0dde-4469-ba7b-9d34aa467b56","72bfb193-a9e2-4bea-803f-45ad73c60d34","7b77970d-90a8-46d2-b20a-fc0ac8e4dffb","921040ca-2c4d-4c05-b164-f1e3be1a6f15","5580d95e-adbc-4c76-834f-b698683c84b8","40c8990d-4e1b-4343-bc83-b4bfe4793c8d","d08647d5-a71f-4992-866a-2485c3782623","58b76575-3fbf-475a-b501-5afb32928d2e","ecdb4429-503a-42ef-9014-d1f46f3ae80d","548ed8a5-09d3-4994-8ce3-2fc8f83fe36f","22e7bded-6a06-4efe-a8f3-aafbe740b989","8e06de66-3afb-4877-9cf3-02b98c56aff8","e2b6888c-6e7f-46f5-8aed-792e00c91b19","5593f187-d6e6-4de5-8fe9-6f58c4813af9","4f5220e6-742b-4b56-8302-5327e1013000","3ddab72e-a842-48fb-9845-419759e470e5","df97b78b-00ff-4766-b3bd-7e343afcb70f","530c1974-4fda-46fe-90f2-b7f6a43ad68b","2e8a9afa-5e1e-4844-a582-f2b3e748e74b","d8edd0e7-b5ee-4504-8e37-d68fc2f39784","e22750e2-54fe-4e83-aed7-9a2a63cd9a0a","02d23847-9734-4cf7-9057-2540cb5f85e3","b649a595-4032-4cec-859a-e63004ecee4f","976d17a6-d360-45f0-a6a6-7b1180029d5b","aaf4b161-150c-4ede-a9df-522dd0b431dd","60983cfe-92a7-494e-951c-b9db3db223d6","bfcb0044-b742-414a-95d2-13508fd4f33b","48c1dd39-aa78-4f02-85db-76552abfce55","e82f5426-7013-4ad4-aedb-97c185b6ceef","58680969-daeb-4e75-adf8-07c660dcb4c8","c468a363-8eb0-4dc7-a519-2515445384c0","3178be13-678e-448f-9729-4dd5d985eaea","39c22a0b-15e4-4a08-b675-c254af400d38","3b30c5e2-49ba-42ea-8d18-030e62265f48","d3acc18a-6e88-4040-81a6-f10e4875690b","d3942769-1286-4c2e-a332-b61d43486376","1c310ed9-c915-4e80-8b3c-643d88b4869a","c2444001-3b91-4201-91ce-b7703605ae65","c0f73b46-5a49-497d-b1ab-3cde1dc7d500","544d7b23-6993-4def-9956-6cd287aad337","93c25f4f-939f-496a-ac9d-8a82c83f1888","203855eb-9237-47ea-a530-98659c81eb6d","6419e9b6-ecdb-4a00-bc13-a9cfb1091eea","1f77bce3-aa1a-48b4-af0e-86a5dadf94a0","ebf23f83-a754-45ea-9d42-94280b847671","7b3abd1a-c546-4009-8f00-c05abd67e1dc","9466a731-8e5e-4177-9b3e-195cb543af85","a2eec958-7458-4f4b-b7bb-b2eb8ddf3618","ad354d9c-e2cb-4192-9555-9c9fd51d1964","b7891441-ecb3-403e-a838-9b9e84e2e28d","bdffe5e7-7c16-47ed-813f-7824877167dc","24c757d4-4ae5-42a4-a950-1512ddedd956","e0289803-c4ac-4903-89d2-246178c812c6","52374d47-169f-4266-a323-9d3daccb2b48","9e4bd992-3f12-48b4-8f5f-3b179be7dacf","7daac744-0cc5-48a0-bd92-339772d754dd","2943a542-4cac-4e8d-8606-cd6400a8ddcc","2745da3e-142e-42ff-8312-1fe438996933","37608d95-c387-4fa2-b613-99b497d74c6e","3a015e59-5660-45b3-acc9-f55a7f7e5b76","dca7a143-5ecc-461b-9571-d63c7b33b93f","b28c203a-af67-4ace-8403-24dee95d879b","50356ef3-2e77-4b2c-b7cd-7268850cd945","4b4ce9f0-ae7a-4ac8-9400-ed50bb9b2610","4a0181ee-2dd2-4399-89e2-51bb4245a82d","ba35aa8f-d185-49d8-94ff-1410485aa74f","17c94f17-df73-4cd1-9757-c50219e37b67","98ad5f10-c4de-442f-a925-930872af5fe1","1e26e9cb-cfb3-4ad8-bec9-ae622fe15c7b","7f271ac8-3045-4d4b-a6d7-24c8de062b09","0a04cf4b-8371-4c9a-b390-4b24f1b8f45c","afcb7a4d-530d-4835-b308-4a9ec25134e6","616e4bc6-9279-4daa-b359-c8c3231c837e","73e86b70-104d-4b6d-b2c5-2c873ff7c7b5","32a0ff5d-dc3b-4640-b85d-15a69f121a2e","b61b64e4-7beb-48e6-8982-83643ec56dab","2b07ef16-a23c-4e2f-b51f-01619c739372","fbab143b-eb02-4a58-84e3-957ba2e4da40","5e409d87-f952-4136-a882-74220735e2f3","4c42975f-6ac3-475a-922b-cdeb95aa94c0","d3af3d8c-46ab-4508-a1b7-1b322e5490f1","6add3aa5-dae8-4671-9abb-d5cb525e4d4a","9d495183-32a9-4589-8d8c-c770adb03c76","097e640c-1144-447c-b4c5-0c4645e5e790","9094d9aa-b2db-4e69-ae9c-2cb97f855754","4abdd450-ddd4-40b3-8a72-b6988687f59e","7a58d222-f023-4647-923a-b2b35ea95309","b67481e3-1718-4170-8aca-ad7422692e00","bfe4c571-caa8-47f5-a349-bcd1893b5ffe","789ef8e3-8d33-435a-a878-651069f6b7d6","350a3d3a-451b-4c06-8f5d-ef840c31c478","4248f850-a41c-4a4f-9581-6c21426bd5a7","8e311f67-b2f2-4820-b993-81cff35312e7","c01d4eb3-3b53-4b5b-8d1e-657da971af53","f0b5b2ac-28eb-4b0d-b05e-a98cffdc0ae1","3049e38c-075b-4352-9b1d-ed9224874c2d","945cec77-75d0-40b4-80d6-f503a68fc693","2298e01a-284e-47dc-b536-c03d4d99ed07","323884d5-ec74-4bfd-813c-af7b92b70f8b","ad944fff-5d9d-4d33-b10f-2a2bdd023ec2","f7c5ff12-b16c-4943-99ea-5cd3998d21f9","eaae5c5c-82b4-44f0-a332-99234a40ab5c","f2ea1ba0-49a9-47dc-a90b-5f9d4dc73698","9b858ac7-7c7d-4d9f-9087-21ce951b98a2","d3b669d0-8ab2-48d8-825e-05d3b9506024","83dca79e-5443-46fe-9bb4-025cbd475167","294c3411-8abc-43f3-8d8a-67a2475afaab","a9c0e19d-8340-423b-ac41-13848f88ccbf","e85e0192-498d-4472-9013-c422699a68f6","9d9b97d4-6d89-40c3-96de-dc728b21d6c1","ed8fc636-8f85-4e68-844d-cff691dd5b25","e870f559-ae2a-4eb0-88c1-ae09a25c0da6","7499d383-b6c6-4170-a466-85ecd040ac0d","df9112fd-8528-46b7-97ed-6286169b7e30","06cc6d21-57e6-4b46-9cdc-760ff54869f1","09313c1a-895d-4664-8093-3e4103398047","00a4a414-425f-4665-bd80-e99a51d08802","3f1aa2de-a68e-446c-8d89-6fb27abbe205","ee056064-8155-4ba1-bb70-320f8b770955","de785a0c-5645-4cd9-8734-22dfd06a8277","3fa30d05-200f-4201-abbb-d6c6dc6f3cc8","1d713910-cfc8-433c-b7f8-449ddf74e10e","08911fd1-86ad-4b4d-8f98-45dee8553e76","b695032a-2d98-441a-b94f-b07830f60216","c8391d84-b1c9-4f58-9dcc-f76cf8695b88","a14fcf2a-34ae-4594-9556-efa931128e72","ee4e8baf-3896-4fbd-bad2-e628715754f1","21208380-4568-48a7-9d65-852049db0c87","2112e1a1-fdf5-46e9-9c77-e7b99bfa4a97","4239f64d-8066-44b6-83e1-b005e33cb766","24d62e7a-4de0-419a-81fe-eef17be281f5","43dd2ffb-cfe7-4ccf-94eb-dfdd2143a871","e2eac30b-7820-4380-ab84-58d7cacd04c3","dc47b198-8a6f-40fb-aebc-012e6a4b1cbb","df18f8a7-5d46-48f4-b0ee-a8fb3ebd609e","bc6e5d76-3429-41cc-a0b3-4b84146c8375","67d18f08-3f28-428a-a7d9-52a32a984d4e","9a5f1d8f-073c-4639-9411-353bd203613a","79a58d05-442a-422d-a2d3-846ee1ecede4","8093ad82-d082-4f5d-9f29-0df32ed7aa0c","248659e2-89af-421e-acc8-d7c452e48d57","de05fbcd-6b1d-4320-91b8-1f07c2d679cb","c6d3af1d-2e16-4560-bd9b-9e0a87d79021","1a1cfb0b-4530-4006-861d-002579d385d4","660c2c64-ccf1-4d41-b6d2-3cdee2d2ea58","14c9891f-a2f0-4529-a72e-ac905192858f","14914d47-def8-4685-9325-17502cefb967","1feb34cb-9f31-4e09-bb28-7446f07980a6","5fc3e544-0dd0-4a29-aaca-54770f8faf6e","a1d44cff-0117-4181-b67a-2d150dad350f","f75c86d9-f237-45dc-a4c5-892579771c29","e96651d8-4a39-4b3d-8e32-2a4c015be7ee","0bbd31fc-e2d7-4d4e-a3cf-764dcc5a2678","785674dc-40c4-484a-8eac-9cf261cbb127","746e2103-28a8-4bf3-875e-4dfb87de7cb4","8946be0e-a669-4c38-bf38-f5b465f0d483","3191efa1-0517-4b65-8040-368ff17f815f","c6e35ea0-0014-4783-b2cc-dbcb50a311fe","e1b54a23-10d2-48f1-b85a-aacdeaf574c3","3ffbc0e5-cbdd-4c3a-9d7e-b57a6b480400","bb158ddd-f569-4cfb-8c9b-3735cf426499","505ab30f-ec44-4b11-95ce-784b1e748ed8","e6b2cd2d-34d0-49be-bf52-e03852cef6ea","fd8144c2-9d29-4f92-bb37-2e86cb1abca5","d72e6414-8949-41d7-b21d-627ad5804e6b","ce36417c-cf45-4e52-9a1c-4c62936c4eae","62209bb7-d128-4dec-a0bc-c23cf0f130a2","c350c055-d1f1-405d-8696-626eddd214ec","9b2ad356-9c86-4ac2-b617-a14463f64ade","e08e5031-ea7b-43a7-b1c4-90b76575ee5f","15385f2f-a362-4d9c-a7fe-8a0796d9685c","6b0a8a38-e86a-4cae-8428-87c085daad6f","a6c4315c-f199-48c2-ae70-e14cf19595df","d2e55b15-1cb7-4756-b208-c8adffc88fa2","eda033c3-ffee-40d0-885b-3ce5583a5dac","31a736ae-7f20-4a61-8185-f98b7442cb31","dac98b98-85bb-43cc-9f25-5ba4d134dd77","c9c2962a-168b-41f0-9607-72187454446d","cf40d66f-5869-4cc9-a157-e6031e5334af","4b09e1c9-c3b9-4541-98fd-07b8da458de6","f44d4e7b-54fd-4a25-9eab-88228366c045","1c97a11e-b0ba-4ce2-beb1-0241a692da01","73009517-3589-4958-8865-793acb9681df","35564fbb-7bd2-41a8-ba80-14a934a2f719","b1baf086-f13c-4f47-98e1-704e4b150b47","64cb7bb3-3e4d-42e8-b90a-6b8842b23979","7228cd45-4d05-4631-81ad-d348308ca3cc","b3338820-4995-4aa5-99a5-92eb5a6ebd11","28e407c0-1a65-4bbc-8e0f-c5d62ce5bc45","b559228b-61a7-4034-915e-4d61d0dea9d6","09813c99-28cd-49a3-9066-418b355eef67","339472b2-c126-415a-8590-b23c3c12c253","259307e9-47ef-4661-b2c2-ecd4e2810a22","239506b8-af12-479d-b826-3bd39f45ae33","cb204d8d-89f7-4fde-b01b-71b63d2da7a2","7386ad45-c309-47cf-9067-8a7b33a64e82","d6b3c60a-446c-4873-81a7-a40bb2c2dd6b","9c844ca4-310d-4f42-9bb1-ad556b89bbe1","1927a65a-fe6e-4c64-8610-a3628884b2b1","5521bfd5-54f9-42d5-a984-63149bf95aa0","b298afa5-1b1a-4cf5-a4c8-c11985b4a070","bbc4ebe8-5ab0-4dfa-9b53-e8f0e5873c45","6e44e108-21b8-452d-8667-622cdfe1bec2","62c75a2f-739b-4e87-bdf3-e3c97f1a7144","7d21537d-624f-4958-a08e-0942a9221e4c","c8a43d12-f9c3-4c4e-92dd-edd7b1f74f64","ad081a9b-81db-4746-aa7b-2f6dca6b23d5","a39db884-ee11-475e-a21a-7eedba707c50","14c40b63-80c4-401a-a97c-bc60f637575c","ed320681-7fec-4f11-bc6f-957dad09a49b","03abf892-0c0f-4bda-8e63-16a1a3e91c49","424e9cf7-e004-4e2f-b2a5-f302c14a442e","5c13b7c2-cb75-40af-a3d0-5b3668b196ad","8c1f3209-9322-4fce-8b1b-7b8986652e7b","452a726e-c73d-4211-8e10-a8fca1e19562","82e14bd8-fcff-4391-a924-f68781ea6f4e","8db7b2b8-02a6-4a75-b028-cfc96aa1a6db","2c621069-dd55-43e5-8941-02cfd7f42b9a"} 
+local SERVER_LIST = {}
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
 local workspace = game:GetService("Workspace")
-local TweenService = game:GetService("TweenService")
-local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local player = Players.LocalPlayer
 
@@ -12,105 +10,117 @@ local RIFTS = {
     {Name = "void-egg", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz"},
     {Name = "FestiveRift", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V"}
 }
+
 local HOP_COOLDOWN = 5
 local MAIN_LOOP_DELAY = 5
-
 local isHopping = false
+local alreadyFound = {}
 
-while true do
-    local rendered = workspace:FindFirstChild("Rendered")
-    if rendered then
-        local riftsFolder = rendered:FindFirstChild("Rifts")
-        if riftsFolder then
-            for _, rift in ipairs(riftsFolder:GetChildren()) do
-                if rift.Name:lower():find("egg") and not alreadyFound[rift] then
-                    local luckText = "N/A"
-                    local timerText = "N/A"
-                    local heightText = "N/A"
-                    local minutes = 0
-                    
-                    pcall(function()
-                        luckText = rift.Display.SurfaceGui.Icon.Luck.Text
-                    end)
-                    
-                    pcall(function()
-                        timerText = rift.Display.SurfaceGui.Timer.Text
-                        minutes = tonumber(timerText:match("%d+")) or 0
-                    end)
-                    
-                    pcall(function()
-                        local riftHeight = rift:GetPivot().Position.Y
-                        heightText = tostring(math.floor(riftHeight)) .. " studs"
-                    end)
-                    
-                    local playerCount = #game:GetService("Players"):GetPlayers()
-                    local jobId = game.JobId
-                    local formattedEggName = formatEggName(rift.Name)
-                    local expireTimestamp = os.time() + (minutes * 60)
-                    
-                    local message = {
-                        ["embeds"] = {{
-                            ["title"] = formattedEggName .. " Has Been Found 🥚",
-                            ["color"] = 0x00FF00,
-                            ["fields"] = {
-                                {
-                                    ["name"] = "🌍 Server Info",
-                                    ["value"] = "Players Online: " .. playerCount,
-                                    ["inline"] = true
+-- format egg names
+local function formatEggName(name)
+    name = name:gsub("-", " ")
+    return name:gsub("(%a)([%w]*)", function(first, rest) return first:upper() .. rest:lower() end)
+end
+
+-- send to discord
+local function sendWebhook(url, payload)
+    local body = HttpService:JSONEncode(payload)
+    pcall(function()
+        request({
+            Url = url,
+            Method = "POST",
+            Headers = {["Content-Type"] = "application/json"},
+            Body = body
+        })
+    end)
+end
+
+-- hop servers
+local function hopServers()
+    if isHopping or #SERVER_LIST == 0 then return end
+    isHopping = true
+    local jobId = SERVER_LIST[math.random(1, #SERVER_LIST)]
+    pcall(function()
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, player)
+    end)
+    task.wait(HOP_COOLDOWN)
+    isHopping = false
+end
+
+-- scan for rifts
+task.spawn(function()
+    while true do
+        local rendered = workspace:FindFirstChild("Rendered")
+        if rendered then
+            local riftsFolder = rendered:FindFirstChild("Rifts")
+            if riftsFolder then
+                for _, rift in ipairs(riftsFolder:GetChildren()) do
+                    if rift.Name:lower():find("egg") and not alreadyFound[rift] then
+                        local luckText, timerText, heightText = "N/A", "N/A", "N/A"
+                        local minutes, seconds = 0, 0
+
+                        pcall(function() luckText = rift.Display.SurfaceGui.Icon.Luck.Text end)
+                        pcall(function()
+                            timerText = rift.Display.SurfaceGui.Timer.Text
+                            minutes = tonumber(timerText:match("(%d+) ?m")) or 0
+                            seconds = tonumber(timerText:match("(%d+) ?s")) or 0
+                        end)
+                        pcall(function()
+                            local riftHeight = rift:GetPivot().Position.Y
+                            heightText = tostring(math.floor(riftHeight)) .. " studs"
+                        end)
+
+                        local formattedEggName = formatEggName(rift.Name)
+                        local expireTimestamp = os.time() + (minutes * 60 + seconds)
+                        local jobId = game.JobId
+                        local playerCount = #Players:GetPlayers()
+                        local maxPlayers = Players.MaxPlayers
+
+                        local message = {
+                            ["embeds"] = {{
+                                ["title"] = formattedEggName .. " Has Been Found 🥚",
+                                ["color"] = 0x00FF00,
+                                ["fields"] = {
+                                    {
+                                        ["name"] = "🌍 Server Info",
+                                        ["value"] = "Players Online: " .. playerCount .. "/" .. maxPlayers,
+                                        ["inline"] = true
+                                    },
+                                    {
+                                        ["name"] = "🎲 Rift Info",
+                                        ["value"] = "Luck: " .. luckText ..
+                                                   "\nExpires: <t:" .. expireTimestamp .. ":R>" ..
+                                                   "\nHeight: " .. heightText,
+                                        ["inline"] = true
+                                    },
+                                    {
+                                        ["name"] = "🔗 Quick Join",
+                                        ["value"] = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")",
+                                        ["inline"] = false
+                                    }
                                 },
-                                {
-                                    ["name"] = "🎲 Rift Info",
-                                    ["value"] = "Luck Multiplier: " .. luckText .. 
-                                               "\nExpires: <t:" .. expireTimestamp .. ":R>" ..
-                                               "\nHeight: " .. heightText,
-                                    ["inline"] = true
-                                },
-                                {
-                                    ["name"] = "🔗 Quick Join",
-                                    ["value"] = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")",
-                                    ["inline"] = false
-                                }
-                            },
-                            ["timestamp"] = DateTime.now():ToIsoDate()
-                        }}
-                    }
-                    
-                    local jsonData = game:GetService("HttpService"):JSONEncode(message)
-                    
-                    local success, result = pcall(function()
-                        local response = request({
-                            Url = webhookUrl,
-                            Method = "POST",
-                            Headers = {
-                                ["Content-Type"] = "application/json"
-                            },
-                            Body = jsonData
-                        })
-                        return response
-                    end)
-                    
-                    if success then
-                        print("Webhook sent successfully for:", rift.Name)
-                    else
-                        print("Error sending webhook:", result)
+                                ["timestamp"] = DateTime.now():ToIsoDate()
+                            }}
+                        }
+
+                        -- send only to matching webhook
+                        for _, riftData in ipairs(RIFTS) do
+                            if rift.Name:lower():find(riftData.Name:lower()) then
+                                sendWebhook(riftData.Webhook, message)
+                            end
+                        end
+
+                        alreadyFound[rift] = true
+                        task.delay(300, function() alreadyFound[rift] = nil end)
                     end
-                    
-                    alreadyFound[rift] = true
-                    task.delay(300, function()
-                        alreadyFound[rift] = nil
-                    end)
                 end
             end
         end
+        task.wait(10)
     end
-    task.wait(10)
-end
+end)
 
+-- main loop for hopping
 while task.wait(MAIN_LOOP_DELAY) do
-    for _, riftData in ipairs(RIFTS) do
-        if isRiftValid(riftData.Name) then
-            reportRift(riftData)
-        end
-    end
     hopServers()
 end
