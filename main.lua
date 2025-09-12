@@ -32,7 +32,6 @@ local function isRiftValid(riftName)
     return rift and rift:FindFirstChild("Display") and rift.Display:IsA("BasePart") and rift or nil
 end
 
--- Report rift info including Luck
 local function reportRift(riftData)
     local rift = isRiftValid(riftData.Name)
     if not rift then return end
@@ -66,10 +65,10 @@ local function reportRift(riftData)
             footer = {text="Webhook v7.4"}
         }},
         components = {{
-            type = 1, -- Action row
+            type = 1, 
             components = {{
-                type = 2, -- Button
-                style = 5, -- Link style
+                type = 2, 
+                style = 5, 
                 label = "Click to Join",
                 url = joinLink
             }}
@@ -79,7 +78,6 @@ local function reportRift(riftData)
     sendWebhook(riftData.Webhook, payload)
 end
 
--- Server hopping
 local function hopServers()
     if isHopping then return end
     isHopping = true
@@ -91,7 +89,6 @@ local function hopServers()
     isHopping = false
 end
 
--- Main loop
 while task.wait(MAIN_LOOP_DELAY) do
     for _, riftData in ipairs(RIFTS) do
         if isRiftValid(riftData.Name) then
