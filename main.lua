@@ -17,76 +17,93 @@ local MAIN_LOOP_DELAY = 5
 
 local isHopping = false
 
-local function sendWebhook(url, payload)
-    if not url or url == "" then return end
-    local body = HttpService:JSONEncode(payload)
-    pcall(function()
-        if syn and syn.request then
-            syn.request({Url = url, Method = "POST", Headers = {["Content-Type"]="application/json"}, Body=body})
+while true do
+    local rendered = workspace:FindFirstChild("Rendered")
+    if rendered then
+        local riftsFolder = rendered:FindFirstChild("Rifts")
+        if riftsFolder then
+            for _, rift in ipairs(riftsFolder:GetChildren()) do
+                if rift.Name:lower():find("egg") and not alreadyFound[rift] then
+                    local luckText = "N/A"
+                    local timerText = "N/A"
+                    local heightText = "N/A"
+                    local minutes = 0
+                    
+                    pcall(function()
+                        luckText = rift.Display.SurfaceGui.Icon.Luck.Text
+                    end)
+                    
+                    pcall(function()
+                        timerText = rift.Display.SurfaceGui.Timer.Text
+                        minutes = tonumber(timerText:match("%d+")) or 0
+                    end)
+                    
+                    pcall(function()
+                        local riftHeight = rift:GetPivot().Position.Y
+                        heightText = tostring(math.floor(riftHeight)) .. " studs"
+                    end)
+                    
+                    local playerCount = #game:GetService("Players"):GetPlayers()
+                    local jobId = game.JobId
+                    local formattedEggName = formatEggName(rift.Name)
+                    local expireTimestamp = os.time() + (minutes * 60)
+                    
+                    local message = {
+                        ["embeds"] = {{
+                            ["title"] = formattedEggName .. " Has Been Found 🥚",
+                            ["color"] = 0x00FF00,
+                            ["fields"] = {
+                                {
+                                    ["name"] = "🌍 Server Info",
+                                    ["value"] = "Players Online: " .. playerCount,
+                                    ["inline"] = true
+                                },
+                                {
+                                    ["name"] = "🎲 Rift Info",
+                                    ["value"] = "Luck Multiplier: " .. luckText .. 
+                                               "\nExpires: <t:" .. expireTimestamp .. ":R>" ..
+                                               "\nHeight: " .. heightText,
+                                    ["inline"] = true
+                                },
+                                {
+                                    ["name"] = "🔗 Quick Join",
+                                    ["value"] = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")",
+                                    ["inline"] = false
+                                }
+                            },
+                            ["timestamp"] = DateTime.now():ToIsoDate()
+                        }}
+                    }
+                    
+                    local jsonData = game:GetService("HttpService"):JSONEncode(message)
+                    
+                    local success, result = pcall(function()
+                        local response = request({
+                            Url = webhookUrl,
+                            Method = "POST",
+                            Headers = {
+                                ["Content-Type"] = "application/json"
+                            },
+                            Body = jsonData
+                        })
+                        return response
+                    end)
+                    
+                    if success then
+                        print("Webhook sent successfully for:", rift.Name)
+                    else
+                        print("Error sending webhook:", result)
+                    end
+                    
+                    alreadyFound[rift] = true
+                    task.delay(300, function()
+                        alreadyFound[rift] = nil
+                    end)
+                end
+            end
         end
-    end)
-end
-
-local function isRiftValid(riftName)
-    local rift = workspace.Rendered.Rifts:FindFirstChild(riftName)
-    return rift and rift:FindFirstChild("Display") and rift.Display:IsA("BasePart") and rift or nil
-end
-
-local function reportRift(riftData)
-    local rift = isRiftValid(riftData.Name)
-    if not rift then return end
-
-    local timerText = rift.Display:FindFirstChild("SurfaceGui") and rift.Display.SurfaceGui:FindFirstChild("Timer") and rift.Display.SurfaceGui.Timer.Text or ""
-    local minutes = tonumber(timerText:match("(%d+) ?m") or 0)
-    local seconds = tonumber(timerText:match("(%d+) ?s") or 0)
-    local discordTimestamp = (minutes + seconds) > 0 and string.format("<t:%d:R>", os.time() + (minutes*60 + seconds)) or ""
-
-    local luck = rift.Display:FindFirstChild("Icon") and rift.Display.Icon:FindFirstChild("Luck") and rift.Display.Icon.Luck.Text or ""
-
-    local playerCount = #Players:GetPlayers()
-    local maxPlayers = 12 -- or dynamic if needed
-    local height = math.floor(rift.Display.Position.Y)
-    local joinLink = string.format("https://www.roblox.com/games/%d?gameId=%s", game.PlaceId, game.JobId)
-
-    local embedFields = {
-        {name="Found By", value=player.Name, inline=false},
-        {name="Rift Height", value=height .. " meters", inline=false},
-        {name="Players", value=playerCount.."/"..maxPlayers, inline=false}
-    }
-    if luck ~= "" then table.insert(embedFields, {name="Luck", value=luck, inline=false}) end
-    if discordTimestamp ~= "" then table.insert(embedFields, {name="Ends", value=discordTimestamp, inline=false}) end
-
-    local payload = {
-        embeds = {{
-            title = riftData.Name.." Found!",
-            description = "A rift has been located.",
-            color = 65280,
-            fields = embedFields,
-            footer = {text="Webhook v7.4"}
-        }},
-        components = {{
-            type = 1, 
-            components = {{
-                type = 2, 
-                style = 5, 
-                label = "Click to Join",
-                url = joinLink
-            }}
-        }}
-    }
-
-    sendWebhook(riftData.Webhook, payload)
-end
-
-local function hopServers()
-    if isHopping then return end
-    isHopping = true
-    local jobId = SERVER_LIST[math.random(1,#SERVER_LIST)]
-    pcall(function()
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, player)
-    end)
-    task.wait(HOP_COOLDOWN)
-    isHopping = false
+    end
+    task.wait(10)
 end
 
 while task.wait(MAIN_LOOP_DELAY) do
