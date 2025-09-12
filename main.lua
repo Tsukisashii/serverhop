@@ -1,3 +1,4 @@
+local SERVER_LIST = {"3f1aa2de-a68e-446c-8d89-6fb27abbe205","e85e0192-498d-4472-9013-c422699a68f6","f016b121-f87d-4e5d-879b-257e69f737b2","ed8fc636-8f85-4e68-844d-cff691dd5b25","eda033c3-ffee-40d0-885b-3ce5583a5dac","2943a542-4cac-4e8d-8606-cd6400a8ddcc","945cec77-75d0-40b4-80d6-f503a68fc693","df18f8a7-5d46-48f4-b0ee-a8fb3ebd609e","4b4ce9f0-ae7a-4ac8-9400-ed50bb9b2610","e08e5031-ea7b-43a7-b1c4-90b76575ee5f","73e86b70-104d-4b6d-b2c5-2c873ff7c7b5","9d9b97d4-6d89-40c3-96de-dc728b21d6c1","a1d44cff-0117-4181-b67a-2d150dad350f","424e9cf7-e004-4e2f-b2a5-f302c14a442e","00a4a414-425f-4665-bd80-e99a51d08802","0bbd31fc-e2d7-4d4e-a3cf-764dcc5a2678","f7c5ff12-b16c-4943-99ea-5cd3998d21f9","ad081a9b-81db-4746-aa7b-2f6dca6b23d5","9b858ac7-7c7d-4d9f-9087-21ce951b98a2","1feb34cb-9f31-4e09-bb28-7446f07980a6","544d7b23-6993-4def-9956-6cd287aad337","746e2103-28a8-4bf3-875e-4dfb87de7cb4","09813c99-28cd-49a3-9066-418b355eef67","400a0cee-46a6-482c-8853-408e519cd716","b559228b-61a7-4034-915e-4d61d0dea9d6","2298e01a-284e-47dc-b536-c03d4d99ed07","1a1cfb0b-4530-4006-861d-002579d385d4","b1baf086-f13c-4f47-98e1-704e4b150b47","e82f5426-7013-4ad4-aedb-97c185b6ceef","c6d3af1d-2e16-4560-bd9b-9e0a87d79021","9094d9aa-b2db-4e69-ae9c-2cb97f855754","7228cd45-4d05-4631-81ad-d348308ca3cc","64cb7bb3-3e4d-42e8-b90a-6b8842b23979","d2e55b15-1cb7-4756-b208-c8adffc88fa2","4239f64d-8066-44b6-83e1-b005e33cb766","fbab143b-eb02-4a58-84e3-957ba2e4da40","2b07ef16-a23c-4e2f-b51f-01619c739372","d72e6414-8949-41d7-b21d-627ad5804e6b","d3942769-1286-4c2e-a332-b61d43486376","e1b54a23-10d2-48f1-b85a-aacdeaf574c3","66bbba17-f308-4525-a28b-b6f6c94273ab","76ecfd76-eaa3-4c97-beed-67b0a50c2752","82e14bd8-fcff-4391-a924-f68781ea6f4e","df9112fd-8528-46b7-97ed-6286169b7e30","98ad5f10-c4de-442f-a925-930872af5fe1","4fd751cb-b92b-4490-98df-11ea1b635e24","af97a5f3-c2af-4bb4-9cd3-689632728676","b298afa5-1b1a-4cf5-a4c8-c11985b4a070","83dca79e-5443-46fe-9bb4-025cbd475167","93c25f4f-939f-496a-ac9d-8a82c83f1888"}
 local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
@@ -16,10 +17,6 @@ local isHopping = false
 local alreadyFound = {}
 local lastCheck = tick()
 
--- Replace with your dynamic server list
-local SERVER_LIST = {"server_placeholder"}
-
--- Format rift names
 local function formatEggName(name)
     if not name then return "" end
     name = name:gsub("-", " ")
@@ -28,7 +25,6 @@ local function formatEggName(name)
     end)
 end
 
--- Send webhook via HttpService (avoids nil call)
 local function sendWebhook(url, payload)
     local ok, body = pcall(function()
         return HttpService:JSONEncode(payload)
@@ -39,19 +35,16 @@ local function sendWebhook(url, payload)
     end)
 end
 
--- Get available servers
 local function getServerArray()
     if type(SERVER_LIST) ~= "table" then return {} end
     return SERVER_LIST
 end
 
--- Handle teleport failures
 TeleportService.TeleportInitFailed:Connect(function(player, result, errMsg)
     warn("Teleport failed:", result, errMsg)
     isHopping = false
 end)
 
--- Hop to a random server (not current)
 local function hopServers()
     if isHopping then return end
     local servers = getServerArray()
@@ -85,9 +78,8 @@ local function hopServers()
     isHopping = false
 end
 
--- Main scanning loop
 task.spawn(function()
-    task.wait(2) -- give some time before first scan
+    task.wait(2) 
     lastCheck = tick()
 
     while true do
@@ -117,7 +109,6 @@ task.spawn(function()
                                 end
                             end)
 
-                            -- parse timer
                             pcall(function()
                                 minutes = tonumber(timerText:match("(%d+) ?m")) or 0
                                 seconds = tonumber(timerText:match("(%d+) ?s")) or 0
@@ -139,7 +130,6 @@ task.spawn(function()
                                 end
                             end)
 
-                            -- build webhook message
                             local formattedEggName = formatEggName(rift.Name)
                             local expireTimestamp = os.time() + (minutes * 60 + seconds)
                             local jobId = tostring(game.JobId or "")
@@ -163,8 +153,6 @@ task.spawn(function()
 
                             alreadyFound[rift.Name] = true
                             task.delay(300, function() alreadyFound[rift.Name] = nil end)
-
-                            -- hop but continue scanning after
                             hopServers()
                         end
                     end
@@ -172,7 +160,6 @@ task.spawn(function()
             end
         end
 
-        -- idle hop if no rift found
         if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
             hopServers()
             lastCheck = tick()
