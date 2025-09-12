@@ -27,12 +27,37 @@ end
 
 local function sendWebhook(url, payload)
     local ok, body = pcall(function()
-        return HttpService:JSONEncode(payload)
+        return game:GetService("HttpService"):JSONEncode(payload)
     end)
     if not ok then return false end
-    return pcall(function()
-        HttpService:PostAsync(url, body, Enum.HttpContentType.ApplicationJson)
+
+    local success, res = pcall(function()
+        if syn and syn.request then
+            return syn.request({
+                Url = url,
+                Method = "POST",
+                Headers = { ["Content-Type"] = "application/json" },
+                Body = body
+            })
+        elseif request then
+            return request({
+                Url = url,
+                Method = "POST",
+                Headers = { ["Content-Type"] = "application/json" },
+                Body = body
+            })
+        else
+            -- fallback (usually won't work with Discord)
+            return game:GetService("HttpService"):PostAsync(url, body, Enum.HttpContentType.ApplicationJson)
+        end
     end)
+
+    if success then
+        return true
+    else
+        warn("Webhook failed:", res)
+        return false
+    end
 end
 
 local function getServerArray()
