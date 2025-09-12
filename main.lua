@@ -75,24 +75,20 @@ local function hopServers()
         return
     end
 
-    math.randomseed(tick() % 2^31)
-
     local currentJob = tostring(game.JobId or "")
-    local chosenJob = nil
-    local attempts, maxAttempts = 0, math.min(10, #servers)
+    local chosenJob
 
-    while attempts < maxAttempts do
-        local idx = math.random(1, #servers)
-        local candidate = tostring(servers[idx] or "")
+    for _ = 1, #servers do
+        local candidate = tostring(servers[math.random(1, #servers)] or "")
         if candidate ~= "" and candidate ~= currentJob then
             chosenJob = candidate
             break
         end
-        attempts += 1
     end
 
     if not chosenJob then
-        chosenJob = tostring(servers[math.random(1, #servers)])
+        warn("No new server found (only current one in list).")
+        return
     end
 
     isHopping = true
