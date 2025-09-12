@@ -6,9 +6,10 @@ local workspace = game:GetService("Workspace")
 
 local player = Players.LocalPlayer
 
+-- Rifts configuration
 local RIFTS = {
-    {Name = "spikey-egg", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz"},
-    {Name = "FestiveRift", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V"}
+    {Name = "spikey-egg", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz", MinLuck = 25}, 
+    {Name = "FestiveRift", Webhook = ""} 
 }
 
 local HOP_COOLDOWN = 3
@@ -31,7 +32,6 @@ end
 
 local function sendWebhook(url, payload)
     local body = HttpService:JSONEncode(payload)
-
     local success, err = pcall(function()
         if syn and syn.request then
             syn.request({
@@ -51,7 +51,6 @@ local function sendWebhook(url, payload)
             error("Cannot send webhook: no supported HTTP request function found")
         end
     end)
-
     if not success then
         warn("Webhook failed:", err)
     end
@@ -118,6 +117,7 @@ task.spawn(function()
                             local luckText, timerText, heightText = "N/A", "N/A", "N/A"
                             local minutes, seconds = 0, 0
 
+                            -- Get Luck and Timer
                             pcall(function()
                                 if rift:FindFirstChild("Display") and rift.Display:FindFirstChild("SurfaceGui") then
                                     if rift.Display.SurfaceGui:FindFirstChild("Icon") and rift.Display.SurfaceGui.Icon:FindFirstChild("Luck") then
@@ -141,6 +141,7 @@ task.spawn(function()
                                 end
                             end)
 
+                            -- get height
                             pcall(function()
                                 if rift.GetPivot then
                                     heightText = tostring(math.floor(rift:GetPivot().Position.Y)) .. " studs"
@@ -168,8 +169,14 @@ task.spawn(function()
                                 }}
                             }
 
-                            sendWebhook(riftData.Webhook, message)
-                            print("Webhook sent for:", rift.Name)
+                            -- parse luck multiplier
+                            local luckValue = tonumber(luckText:match("%d+")) or 0
+
+                            -- check MinLuck requirement
+                            if not riftData.MinLuck or luckValue >= riftData.MinLuck then
+                                sendWebhook(riftData.Webhook, message)
+                                print("Webhook sent for:", rift.Name)
+                            end
 
                             alreadyFound[rift] = true
                             task.delay(300, function() alreadyFound[rift] = nil end)
@@ -189,4 +196,3 @@ task.spawn(function()
         task.wait(1)
     end
 end)
-
