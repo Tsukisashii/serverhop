@@ -9,6 +9,7 @@ local TextChatService = game:GetService("TextChatService")
 
 local player = Players.LocalPlayer
 
+-- Rift configuration
 local RIFTS = {
     {Name = "lunar-egg", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz", MinLuck = 25},  
     {Name = "brainrot-egg", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V", MinLuck = nil}  
@@ -20,6 +21,7 @@ local isHopping = false
 local alreadyFound = {} 
 local lastCheck = tick()
 
+-- Helpers
 local function formatEggName(name)
     if not name then return "" end
     name = name:gsub("-", " ")
@@ -46,14 +48,26 @@ local function shouldSendRift(riftData, luckText)
     end
 end
 
+-- ✅ Fixed Timer Parser
 local function parseTimer(timerText)
     if not timerText or timerText == "" then return 0 end
 
-    local mm, ss = timerText:match("(%d+):(%d+)")
-    if mm and ss then
-        return tonumber(mm) * 60 + tonumber(ss)
+    -- Case 1: format like "05:00"
+    local firstNum, secondNum = timerText:match("^(%d+):(%d+)$")
+    if firstNum and secondNum then
+        firstNum = tonumber(firstNum)
+        secondNum = tonumber(secondNum)
+
+        -- If the first number is small (<= 6), assume it's MM:SS
+        if firstNum <= 6 then
+            return (firstNum * 60) + secondNum
+        else
+            -- Otherwise treat as HH:MM
+            return (firstNum * 3600) + (secondNum * 60)
+        end
     end
 
+    -- Case 2: format like "1h 30m"
     local h, m = timerText:match("(%d+)h"), timerText:match("(%d+)m")
     h = tonumber(h) or 0
     m = tonumber(m) or 0
@@ -61,6 +75,7 @@ local function parseTimer(timerText)
         return h * 3600 + m * 60
     end
 
+    -- Case 3: format like "5m 20s"
     local m2, s = timerText:match("(%d+)%s*m"), timerText:match("(%d+)%s*s")
     m2 = tonumber(m2) or 0
     s = tonumber(s) or 0
@@ -68,7 +83,7 @@ local function parseTimer(timerText)
         return m2 * 60 + s
     end
 
-    return 0 -- fallback
+    return 0 -- fallback if no format matched
 end
 
 local function sendWebhook(url, payload)
@@ -152,64 +167,61 @@ task.spawn(function()
             local riftsFolder = rendered:FindFirstChild("Rifts")
             if riftsFolder then
                 for _, rift in ipairs(riftsFolder:GetChildren()) do
-                    for _, riftData in ipairs(RIFTS) do
-                        if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) then
-                            -- Check if we've already stored expire time for this rift
-                            local expireTimestamp = alreadyFound[rift]
+                    -- 🛑 Mark as found IMMEDIATELY to avoid duplicates
+                    if not alreadyFound[rift] then
+                        for _, riftData in ipairs(RIFTS) do
+                            if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) then
+                                local luckText, timerText, heightText = "N/A", "N/A", "N/A"
 
-                            local luckText, timerText, heightText = "N/A", "N/A", "N/A"
-
-                            pcall(function()
-                                if rift:FindFirstChild("Display") and rift.Display:FindFirstChild("SurfaceGui") then
-                                    if rift.Display.SurfaceGui:FindFirstChild("Icon") and rift.Display.SurfaceGui.Icon:FindFirstChild("Luck") then
-                                        luckText = rift.Display.SurfaceGui.Icon.Luck.Text or "N/A"
+                                pcall(function()
+                                    if rift:FindFirstChild("Display") and rift.Display:FindFirstChild("SurfaceGui") then
+                                        if rift.Display.SurfaceGui:FindFirstChild("Icon") and rift.Display.SurfaceGui.Icon:FindFirstChild("Luck") then
+                                            luckText = rift.Display.SurfaceGui.Icon.Luck.Text or "N/A"
+                                        end
+                                        if rift.Display.SurfaceGui:FindFirstChild("Timer") then
+                                            timerText = rift.Display.SurfaceGui.Timer.Text or ""
+                                        end
                                     end
-                                    if rift.Display.SurfaceGui:FindFirstChild("Timer") then
-                                        timerText = rift.Display.SurfaceGui.Timer.Text or ""
-                                    end
-                                end
-                            end)
+                                end)
 
-                            -- First time seeing this rift → calculate expire time
-                            if not expireTimestamp then
                                 local secondsLeft = parseTimer(timerText)
                                 if secondsLeft < 0 then secondsLeft = 0 end
-                                expireTimestamp = os.time() + secondsLeft
+                                local expireTimestamp = os.time() + secondsLeft
+
                                 alreadyFound[rift] = expireTimestamp
                                 task.delay(secondsLeft + 2, function()
                                     alreadyFound[rift] = nil
                                 end)
+
+                                if not shouldSendRift(riftData, luckText) then
+                                    continue
+                                end
+
+                                local formattedEggName = formatEggName(rift.Name)
+                                local jobId = tostring(game.JobId or "0")
+                                local playerCount = #Players:GetPlayers()
+                                local maxPlayers = Players.MaxPlayers or 0
+
+                                local message = {
+                                    embeds = {{
+                                        title = formattedEggName .. " Has Been Found 🥚",
+                                        color = 0x00FF00,
+                                        fields = {
+                                            {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
+                                            {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
+                                            {name = "🔗 Quick Join", value = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")", inline = false}
+                                        },
+                                        timestamp = DateTime.now():ToIsoDate()
+                                    }}
+                                }
+
+                                sendWebhook(riftData.Webhook, message)
+                                print("Webhook sent for:", rift.Name, "| Expires:", expireTimestamp)
+
+                                hopServers()
+                                foundRift = true
+                                break
                             end
-
-                            -- Skip if minimum luck not met
-                            if not shouldSendRift(riftData, luckText) then
-                                continue
-                            end
-
-                            local formattedEggName = formatEggName(rift.Name)
-                            local jobId = tostring(game.JobId or "0")
-                            local playerCount = #Players:GetPlayers()
-                            local maxPlayers = Players.MaxPlayers or 0
-
-                            local message = {
-                                embeds = {{
-                                    title = formattedEggName .. " Has Been Found 🥚",
-                                    color = 0x00FF00,
-                                    fields = {
-                                        {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
-                                        {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
-                                        {name = "🔗 Quick Join", value = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")", inline = false}
-                                    },
-                                    timestamp = DateTime.now():ToIsoDate()
-                                }}
-                            }
-
-                            sendWebhook(riftData.Webhook, message)
-                            print("Webhook sent for:", rift.Name, "| Expires:", expireTimestamp)
-
-                            hopServers()
-                            foundRift = true
-                            break
                         end
                     end
                 end
