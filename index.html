@@ -3,57 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Redirecting...</title>
+<title>Redirecting to Roblox...</title>
 <style>
-    /* Full screen center */
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #000; /* Black background to make neon pop */
-        font-family: Arial, sans-serif;
-    }
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0d0d0d;
+    font-family: 'Arial', sans-serif;
+  }
 
-    /* Neon text effect */
-    .neon-text {
-        color: #3AACDA; /* Your requested color */
-        font-size: 2.5em;
-        text-align: center;
-        text-shadow:
-            0 0 5px #3AACDA,
-            0 0 10px #3AACDA,
-            0 0 20px #3AACDA,
-            0 0 40px #3AACDA;
-        animation: flicker 1.5s infinite alternate;
-    }
+  h1 {
+    color: #3AACDA;
+    font-size: 3rem;
+    text-shadow:
+      0 0 5px #3AACDA,
+      0 0 10px #3AACDA,
+      0 0 20px #3AACDA,
+      0 0 40px #3AACDA;
+    animation: neonFlicker 1.5s infinite alternate;
+  }
 
-    @keyframes flicker {
-        0% { text-shadow: 0 0 5px #3AACDA, 0 0 10px #3AACDA, 0 0 20px #3AACDA, 0 0 40px #3AACDA; }
-        50% { text-shadow: 0 0 2px #3AACDA, 0 0 5px #3AACDA, 0 0 10px #3AACDA, 0 0 20px #3AACDA; }
-        100% { text-shadow: 0 0 5px #3AACDA, 0 0 10px #3AACDA, 0 0 20px #3AACDA, 0 0 40px #3AACDA; }
-    }
+  @keyframes neonFlicker {
+    0%, 100% { text-shadow:
+      0 0 5px #3AACDA,
+      0 0 10px #3AACDA,
+      0 0 20px #3AACDA,
+      0 0 40px #3AACDA; opacity: 1; }
+    50% { text-shadow:
+      0 0 2px #3AACDA,
+      0 0 5px #3AACDA,
+      0 0 10px #3AACDA,
+      0 0 20px #3AACDA; opacity: 0.8; }
+  }
 </style>
 </head>
 <body>
-    <div class="neon-text">Redirecting to Roblox...</div>
+<h1>Redirecting to Roblox...</h1>
 
-    <script>
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const placeId = urlParams.get('placeId');
-        const gameInstanceId = urlParams.get('jobId');
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const placeId = params.get('placeId');
+  const gameInstanceId = params.get('gameInstanceId');
 
-        if (placeId && gameInstanceId) {
-            // Redirect after a short delay
-            setTimeout(() => {
-                window.location.href = `roblox://experiences/start?placeId=${placeId}&gameInstanceId=${gameInstanceId}`;
-            }, 1500); // 1.5 seconds
-        } else {
-            document.querySelector('.neon-text').innerText = 'Missing Roblox parameters!';
-        }
-    </script>
+  if (placeId && gameInstanceId) {
+    const robloxURL = `roblox://experiences/start?placeId=${placeId}&gameInstanceId=${gameInstanceId}`;
+    setTimeout(() => window.location.href = robloxURL, 1200);
+  } else {
+    document.querySelector('h1').innerText = "Missing Roblox parameters!";
+  }
+</script>
 </body>
 </html>
