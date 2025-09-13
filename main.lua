@@ -68,9 +68,7 @@ local function parseTimer(timerText)
     if not timerText or timerText == "" then return 0 end
     local s = timerText:lower():gsub("^%s+", ""):gsub("%s+$", "")
 
-    if s:find("ago") or s:find("expired") then
-        return 0
-    end
+    if s:find("ago") or s:find("expired") then return 0 end
 
     local h, m, sec = s:match("^(%d+):(%d+):(%d+)$")
     if h and m and sec then
@@ -82,16 +80,21 @@ local function parseTimer(timerText)
         return tonumber(mm)*60 + tonumber(ss)
     end
 
-    -- 🔧 force unit fallback
-    local hours = tonumber(s:match("(%d+)%s*h")) or 0
-    local mins  = tonumber(s:match("(%d+)%s*m")) or 0
-    local secs  = tonumber(s:match("(%d+)%s*s")) or 0
-    if hours + mins + secs > 0 then
-        return hours*3600 + mins*60 + secs
+    local totalSeconds = 0
+    for number, unit in s:gmatch("(%d+)%s*([hms])") do
+        number = tonumber(number)
+        if unit == "h" then
+            totalSeconds = totalSeconds + number * 3600
+        elseif unit == "m" then
+            totalSeconds = totalSeconds + number * 60
+        elseif unit == "s" then
+            totalSeconds = totalSeconds + number
+        end
     end
 
-    return 0
+    return totalSeconds
 end
+
 
 local function sendWebhook(url, payload)
     local body = HttpService:JSONEncode(payload)
