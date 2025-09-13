@@ -31,27 +31,15 @@ end
 
 local function sendWebhook(url, payload)
     local body = HttpService:JSONEncode(payload)
-
     local success, err = pcall(function()
         if syn and syn.request then
-            syn.request({
-                Url = url,
-                Method = "POST",
-                Headers = { ["Content-Type"] = "application/json" },
-                Body = body
-            })
+            syn.request({Url = url, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = body})
         elseif request then
-            request({
-                Url = url,
-                Method = "POST",
-                Headers = { ["Content-Type"] = "application/json" },
-                Body = body
-            })
+            request({Url = url, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = body})
         else
             error("Cannot send webhook: no supported HTTP request function found")
         end
     end)
-
     if not success then
         warn("Webhook failed:", err)
     end
@@ -111,85 +99,75 @@ task.spawn(function()
             local riftsFolder = rendered:FindFirstChild("Rifts")
             if riftsFolder then
                 for _, rift in ipairs(riftsFolder:GetChildren()) do
-                    for idx, riftData in ipairs(RIFTS) do
-                        if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) and not alreadyFound[rift] then
-                            foundRift = true
+                    local nameLower = normalize(rift.Name)
 
-                            local luckText, timerText, heightText = "N/A", "N/A", "N/A"
-                            local minutes, seconds = 0, 0
-                            local luckValue = nil
-
-                            -- Safe retrieval of Luck
+                    for _, riftData in ipairs(RIFTS) do
+                        if riftData.Name and nameLower:find(normalize(riftData.Name)) and not alreadyFound[rift] then
+                            local luckValue = 0
                             pcall(function()
-                                if rift:FindFirstChild("Display") and
-                                   rift.Display:FindFirstChild("SurfaceGui") and
-                                   rift.Display.SurfaceGui:FindFirstChild("Icon") and
-                                   rift.Display.SurfaceGui.Icon:FindFirstChild("Luck") then
-                                    luckText = rift.Display.SurfaceGui.Icon.Luck.Text or "N/A"
-                                    luckValue = tonumber(luckText)
-                                end
+                                luckValue = tonumber(rift.Display.SurfaceGui.Icon.Luck.Text) or 0
                             end)
 
-                            -- Only send for first rift if luck == 25
-                            if idx == 1 and luckValue ~= 25 then
-                                break
-                            end
+                            -- Only send if meets MinLuck (if specified)
+                            if (riftData.MinLuck == nil) or (luckValue >= riftData.MinLuck) then
+                                foundRift = true
 
-                            -- Timer safe retrieval
-                            pcall(function()
-                                if rift.Display.SurfaceGui:FindFirstChild("Timer") then
-                                    timerText = rift.Display.SurfaceGui.Timer.Text or ""
-                                end
-                            end)
+                                local timerText, heightText = "N/A", "N/A"
+                                local minutes, seconds = 0, 0
 
-                            pcall(function()
-                                minutes = tonumber(timerText:match("(%d+) ?m")) or 0
-                                seconds = tonumber(timerText:match("(%d+) ?s")) or 0
-                                if minutes == 0 and seconds == 0 then
-                                    local mm, ss = timerText:match("(%d+):(%d+)")
-                                    if mm and ss then
-                                        minutes = tonumber(mm) or 0
-                                        seconds = tonumber(ss) or 0
+                                pcall(function()
+                                    if rift.Display.SurfaceGui:FindFirstChild("Timer") then
+                                        timerText = rift.Display.SurfaceGui.Timer.Text or ""
                                     end
-                                end
-                            end)
+                                end)
 
-                            -- Height safe retrieval
-                            pcall(function()
-                                if rift.GetPivot then
-                                    heightText = tostring(math.floor(rift:GetPivot().Position.Y)) .. " studs"
-                                elseif rift:FindFirstChild("Display") and rift.Display:IsA("BasePart") then
-                                    heightText = tostring(math.floor(rift.Display.Position.Y)) .. " studs"
-                                end
-                            end)
+                                pcall(function()
+                                    minutes = tonumber(timerText:match("(%d+) ?m")) or 0
+                                    seconds = tonumber(timerText:match("(%d+) ?s")) or 0
+                                    if minutes == 0 and seconds == 0 then
+                                        local mm, ss = timerText:match("(%d+):(%d+)")
+                                        if mm and ss then
+                                            minutes = tonumber(mm) or 0
+                                            seconds = tonumber(ss) or 0
+                                        end
+                                    end
+                                end)
 
-                            -- Build webhook message
-                            local formattedEggName = formatEggName(rift.Name)
-                            local expireTimestamp = os.time() + (minutes * 60 + seconds)
-                            local jobId = tostring(game.JobId or "")
-                            local playerCount = #Players:GetPlayers()
-                            local maxPlayers = Players.MaxPlayers or 0
+                                pcall(function()
+                                    if rift.GetPivot then
+                                        heightText = tostring(math.floor(rift:GetPivot().Position.Y)) .. " studs"
+                                    elseif rift:FindFirstChild("Display") and rift.Display:IsA("BasePart") then
+                                        heightText = tostring(math.floor(rift.Display.Position.Y)) .. " studs"
+                                    end
+                                end)
 
-                            local message = {
-                                embeds = {{
-                                    title = formattedEggName .. " Has Been Found 🥚",
-                                    color = 0x00FF00,
-                                    fields = {
-                                        {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
-                                        {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
-                                        {name = "🔗 Quick Join", value = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")", inline = false}
-                                    },
-                                    timestamp = DateTime.now():ToIsoDate()
-                                }}
-                            }
+                                local formattedEggName = formatEggName(rift.Name)
+                                local expireTimestamp = os.time() + (minutes * 60 + seconds)
+                                local jobId = tostring(game.JobId or "")
+                                local playerCount = #Players:GetPlayers()
+                                local maxPlayers = Players.MaxPlayers or 0
 
-                            sendWebhook(riftData.Webhook, message)
-                            print("Webhook sent for:", rift.Name)
+                                local message = {
+                                    embeds = {{
+                                        title = formattedEggName .. " Has Been Found 🥚",
+                                        color = 0x00FF00,
+                                        fields = {
+                                            {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
+                                            {name = "🎲 Rift Info", value = "Luck: " .. luckValue .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
+                                            {name = "🔗 Quick Join", value = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")", inline = false}
+                                        },
+                                        timestamp = DateTime.now():ToIsoDate()
+                                    }}
+                                }
 
-                            alreadyFound[rift] = true
-                            task.delay(300, function() alreadyFound[rift] = nil end)
+                                sendWebhook(riftData.Webhook, message)
+                                print("Webhook sent for:", rift.Name, "Luck:", luckValue)
 
-                            hopServers()
+                                alreadyFound[rift] = true
+                                task.delay(300, function() alreadyFound[rift] = nil end)
+
+                                hopServers()
+                            end
                         end
                     end
                 end
