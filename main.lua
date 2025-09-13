@@ -51,7 +51,6 @@ local function parseTimer(timerText)
     if not timerText or timerText == "" then return 0 end
     timerText = timerText:lower()
 
-    -- extract minutes and seconds from text like "5m 30s" or "5 m 30 s"
     local minutes = tonumber(timerText:match("(%d+)%s*m")) or 0
     local seconds = tonumber(timerText:match("(%d+)%s*s")) or 0
 
@@ -149,17 +148,17 @@ task.spawn(function()
             local riftData = info.riftData
             local riftId = info.riftId
 
-            local luckText, timerText, heightText = "N/A", "N/A", "N/A"
+            local luckText, timerText, heightText = nil, nil, nil
             pcall(function()
                 if rift:FindFirstChild("Display") then
                     local displayPart = rift.Display
                     if displayPart:FindFirstChild("SurfaceGui") then
                         local gui = displayPart.SurfaceGui
                         if gui:FindFirstChild("Icon") and gui.Icon:FindFirstChild("Luck") then
-                            luckText = gui.Icon.Luck.Text or "N/A"
+                            luckText = gui.Icon.Luck.Text
                         end
                         if gui:FindFirstChild("Timer") then
-                            timerText = gui.Timer.Text or ""
+                            timerText = gui.Timer.Text
                         end
                     end
                     if displayPart:IsA("BasePart") then
@@ -168,11 +167,12 @@ task.spawn(function()
                 end
             end)
 
-            local secondsLeft = parseTimer(timerText) or 0
-            if secondsLeft <= 0 then continue end -- skip expired timers
+            local secondsLeft = parseTimer(timerText or "") or 0
+            if secondsLeft <= 0 then continue end
 
             local expireTimestamp = os.time() + secondsLeft
             currentServerRifts[riftId] = expireTimestamp
+            local expireDiscordTimestamp = "<t:" .. expireTimestamp .. ":R>"
 
             if not shouldSendRift(riftData, luckText) then continue end
 
@@ -183,15 +183,27 @@ task.spawn(function()
             local maxPlayers = Players.MaxPlayers or 0
             local redirectURL = "https://serverhop-jins-projects-240eae56.vercel.app/?placeId=" .. placeId .. "&gameInstanceId=" .. jobId
 
+            local fields = {}
+
+            if playerCount and maxPlayers then
+                table.insert(fields, {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true})
+            end
+            if luckText or expireDiscordTimestamp or heightText then
+                local riftInfo = ""
+                if luckText then riftInfo = riftInfo .. "Luck: " .. luckText .. "\n" end
+                if expireDiscordTimestamp then riftInfo = riftInfo .. "Expires: " .. expireDiscordTimestamp .. "\n" end
+                if heightText then riftInfo = riftInfo .. "Height: " .. heightText end
+                table.insert(fields, {name = "🎲 Rift Info", value = riftInfo, inline = true})
+            end
+            if redirectURL then
+                table.insert(fields, {name = "🔗 Quick Join", value = "[Click to Join Server](" .. redirectURL .. ")", inline = false})
+            end
+
             local message = {
                 embeds = {{
                     title = formattedEggName .. " Has Been Found 🥚",
                     color = 0x00FF00,
-                    fields = {
-                        {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
-                        {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
-                        {name = "🔗 Quick Join", value = "[Click to Join Server](" .. redirectURL .. ")", inline = false}
-                    },
+                    fields = fields,
                     timestamp = DateTime.now():ToIsoDate()
                 }}
             }
