@@ -3,6 +3,7 @@ local HttpService = game:GetService("HttpService")
 local TeleportService = game:GetService("TeleportService")
 local Players = game:GetService("Players")
 local workspace = game:GetService("Workspace")
+local TextChatService = game:GetService("TextChatService")
 
 local player = Players.LocalPlayer
 
@@ -115,6 +116,29 @@ local function hopServers()
     isHopping = false
 end
 
+-- Function to spam chat using TextChatService safely
+local function sendRiftChatSpam(times, delay, message)
+    task.spawn(function()
+        -- Wait until at least one channel exists
+        local channel
+        repeat
+            channel = next(TextChatService.TextChannels:GetChildren())
+            task.wait(0.5)
+        until channel
+
+        for i = 1, times do
+            pcall(function()
+                local firstChannel = next(TextChatService.TextChannels:GetChildren())
+                if firstChannel then
+                    firstChannel:SendAsync(message)
+                end
+            end)
+            task.wait(delay)
+        end
+        print("Chat messages sent!")
+    end)
+end
+
 -- Main loop
 task.spawn(function()
     task.wait(2)
@@ -194,20 +218,8 @@ task.spawn(function()
                             sendWebhook(riftData.Webhook, message)
                             print("Webhook sent for:", rift.Name)
 
-                            -- Spam chat 5 times using TextChatService before hopping
-                            local channel = TextChatService.TextChannels.RBXGeneral
-                            local spamMessage = "JOIN FOR RIFTS - d.gg 87NMF6H5Vs"
-                            if channel then
-                                for i = 1, 5 do
-                                    pcall(function()
-                                        channel:SendAsync(spamMessage)
-                                    end)
-                                    task.wait(0.5)
-                                end
-                                print("Chat messages sent!")
-                            else
-                                warn("RBXGeneral channel not found! Messages not sent.")
-                            end
+                            -- Spam chat using TextChatService before hopping
+                            sendRiftChatSpam(5, 0.5, "JOIN FOR RIFTS - d.gg 87NMF6H5Vs")
 
                             alreadyFound[rift] = true
                             task.delay(300, function() alreadyFound[rift] = nil end)
