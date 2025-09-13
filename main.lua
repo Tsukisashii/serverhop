@@ -129,7 +129,6 @@ local function hopServers()
 
     isHopping = true
     warn("Teleporting to server:", chosenJob)
-    -- Reset rift data when hopping
     currentServerRifts = {}
     pcall(function()
         TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, player)
