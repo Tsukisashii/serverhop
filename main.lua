@@ -232,9 +232,6 @@ task.spawn(function()
                             sendWebhook(riftData.Webhook, message)
                             print("Webhook sent for:", rift.Name)
 
-                            alreadyFound[rift] = true
-                            task.delay(300, function() alreadyFound[rift] = nil end)
-
                             hopServers()
                             foundRift = true
                         end
