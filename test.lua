@@ -49,28 +49,25 @@ end
 local function parseTimer(timerText)
     if not timerText or timerText == "" then return 0 end
 
-    timerText = timerText:lower():gsub("%s+", "") -- remove spaces
+    timerText = timerText:lower():gsub("%s+", "") 
 
     local m, s = timerText:match("^(%d+):(%d+)$")
     if m and s then
-        m = tonumber(m)
-        s = tonumber(s)
-        if m <= 6 then
-            return (m * 60) + s
-        else
-            return (m * 3600) + (s * 60)
-        end
+        return (tonumber(m) * 60) + tonumber(s)
     end
 
     local h = tonumber(timerText:match("(%d+)h")) or 0
     local min = tonumber(timerText:match("(%d+)m")) or 0
     local sec = tonumber(timerText:match("(%d+)s")) or 0
+
     if h > 0 or min > 0 or sec > 0 then
         return (h * 3600) + (min * 60) + sec
     end
 
     local fallback = tonumber(timerText)
-    if fallback then return fallback end
+    if fallback then
+        return fallback
+    end
 
     return 0
 end
@@ -140,7 +137,8 @@ task.spawn(function()
     lastCheck = tick()
 
     while true do
-        local foundRift = false
+        local riftsToSend = {} -- collect rifts to send
+
         local rendered = workspace:FindFirstChild("Rendered")
         if rendered then
             local riftsFolder = rendered:FindFirstChild("Rifts")
@@ -149,62 +147,8 @@ task.spawn(function()
                     if not currentServerRifts[rift] then
                         for _, riftData in ipairs(RIFTS) do
                             if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) then
-                                local luckText, timerText, heightText = "N/A", "N/A", "N/A"
-
-                                pcall(function()
-                                    if rift:FindFirstChild("Display") then
-                                        local displayPart = rift.Display
-                                        if displayPart:FindFirstChild("SurfaceGui") then
-                                            local gui = displayPart.SurfaceGui
-                                            if gui:FindFirstChild("Icon") and gui.Icon:FindFirstChild("Luck") then
-                                                luckText = gui.Icon.Luck.Text or "N/A"
-                                            end
-                                            if gui:FindFirstChild("Timer") then
-                                                timerText = gui.Timer.Text or ""
-                                            end
-                                        end
-                                        if displayPart:IsA("BasePart") then
-                                            heightText = math.floor(displayPart.Position.Y) .. "m"
-                                        end
-                                    end
-                                end)
-
-                                -- Always future/current timestamp
-                                local secondsLeft = parseTimer(timerText) or 0
-                                if secondsLeft < 0 then secondsLeft = 0 end
-                                local expireTimestamp = os.time() + secondsLeft
-
-                                currentServerRifts[rift] = expireTimestamp
-
-                                if not shouldSendRift(riftData, luckText) then
-                                    continue
-                                end
-
-                                local formattedEggName = formatEggName(rift.Name)
-                                local jobId = tostring(game.JobId or "0")
-                                local placeId = tostring(game.PlaceId or "0")
-                                local playerCount = #Players:GetPlayers()
-                                local maxPlayers = Players.MaxPlayers or 0
-
-                                local redirectURL = "https://serverhop-jins-projects-240eae56.vercel.app/?placeId=" .. placeId .. "&gameInstanceId=" .. jobId
-
-                                local message = {
-                                    embeds = {{
-                                        title = formattedEggName .. " Has Been Found 🥚",
-                                        color = 0x00FF00,
-                                        fields = {
-                                            {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
-                                            {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
-                                            {name = "🔗 Quick Join", value = "[Click to Join Server](" .. redirectURL .. ")", inline = false}
-                                        },
-                                        timestamp = DateTime.now():ToIsoDate()
-                                    }}
-                                }
-
-                                sendWebhook(riftData.Webhook, message)
-                                print("Webhook sent for:", rift.Name, "| Expires:", expireTimestamp)
-
-                                foundRift = true
+                                table.insert(riftsToSend, {rift = rift, riftData = riftData})
+                                break
                             end
                         end
                     end
@@ -212,13 +156,71 @@ task.spawn(function()
             end
         end
 
-        if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
-            hopServers()
-            lastCheck = tick()
+        -- Send webhooks for all collected rifts
+        for _, info in ipairs(riftsToSend) do
+            local rift = info.rift
+            local riftData = info.riftData
+
+            local luckText, timerText, heightText = "N/A", "N/A", "N/A"
+            pcall(function()
+                if rift:FindFirstChild("Display") then
+                    local displayPart = rift.Display
+                    if displayPart:FindFirstChild("SurfaceGui") then
+                        local gui = displayPart.SurfaceGui
+                        if gui:FindFirstChild("Icon") and gui.Icon:FindFirstChild("Luck") then
+                            luckText = gui.Icon.Luck.Text or "N/A"
+                        end
+                        if gui:FindFirstChild("Timer") then
+                            timerText = gui.Timer.Text or ""
+                        end
+                    end
+                    if displayPart:IsA("BasePart") then
+                        heightText = math.floor(displayPart.Position.Y) .. "m"
+                    end
+                end
+            end)
+
+            local secondsLeft = parseTimer(timerText) or 0
+            if secondsLeft < 0 then secondsLeft = 0 end
+            local expireTimestamp = os.time() + secondsLeft
+
+            currentServerRifts[rift] = expireTimestamp
+
+            if not shouldSendRift(riftData, luckText) then
+                continue
+            end
+
+            local formattedEggName = formatEggName(rift.Name)
+            local jobId = tostring(game.JobId or "0")
+            local placeId = tostring(game.PlaceId or "0")
+            local playerCount = #Players:GetPlayers()
+            local maxPlayers = Players.MaxPlayers or 0
+
+            local redirectURL = "https://serverhop-jins-projects-240eae56.vercel.app/?placeId=" .. placeId .. "&gameInstanceId=" .. jobId
+
+            local message = {
+                embeds = {{
+                    title = formattedEggName .. " Has Been Found 🥚",
+                    color = 0x00FF00,
+                    fields = {
+                        {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
+                        {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
+                        {name = "🔗 Quick Join", value = "[Click to Join Server](" .. redirectURL .. ")", inline = false}
+                    },
+                    timestamp = DateTime.now():ToIsoDate()
+                }}
+            }
+
+            sendWebhook(riftData.Webhook, message)
+            print("Webhook sent for:", rift.Name, "| Expires:", expireTimestamp)
         end
 
-        if foundRift then
-            hopServers() 
+        -- Hop only if we sent any rifts
+        if #riftsToSend > 0 then
+            hopServers()
+        elseif (tick() - lastCheck) >= IDLE_HOP_TIME then
+            hopServers()
+            lastCheck = tick()
         end
 
         task.wait(1)
