@@ -50,28 +50,32 @@ end
 
 local function parseTimer(timerText)
     if not timerText or timerText == "" then return 0 end
-    local firstNum, secondNum = timerText:match("^(%d+):(%d+)$")
-    if firstNum and secondNum then
-        firstNum = tonumber(firstNum)
-        secondNum = tonumber(secondNum)
-        if firstNum <= 6 then
-            return (firstNum * 60) + secondNum
+
+    timerText = timerText:lower():gsub("%s+", "") -- remove spaces
+
+    local m, s = timerText:match("^(%d+):(%d+)$")
+    if m and s then
+        m = tonumber(m)
+
+        s = tonumber(s)
+        if m <= 6 then
+            return (m * 60) + s
         else
-            return (firstNum * 3600) + (secondNum * 60)
+            return (m * 3600) + (s * 60)
         end
     end
-    local h, m = timerText:match("(%d+)h"), timerText:match("(%d+)m")
-    h = tonumber(h) or 0
-    m = tonumber(m) or 0
-    if h > 0 or m > 0 then
-        return h * 3600 + m * 60
+
+    -- Format: XhYm or Xh or Ym
+    local h = tonumber(timerText:match("(%d+)h")) or 0
+    local min = tonumber(timerText:match("(%d+)m")) or 0
+    local sec = tonumber(timerText:match("(%d+)s")) or 0
+    if h > 0 or min > 0 or sec > 0 then
+        return (h * 3600) + (min * 60) + sec
     end
-    local m2, s = timerText:match("(%d+)%s*m"), timerText:match("(%d+)%s*s")
-    m2 = tonumber(m2) or 0
-    s = tonumber(s) or 0
-    if m2 > 0 or s > 0 then
-        return m2 * 60 + s
-    end
+
+    local fallback = tonumber(timerText)
+    if fallback then return fallback end
+
     return 0
 end
 
