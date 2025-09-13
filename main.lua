@@ -66,7 +66,9 @@ local function sendWebhook(url, payload)
             error("Cannot send webhook: no supported HTTP request function found")
         end
     end)
-    if not success then warn("Webhook failed:", err) end
+    if not success then
+        warn("Webhook failed:", err)
+    end
 end
 
 -- Server hopping
@@ -107,7 +109,7 @@ local function hopServers()
     isHopping = true
     warn("Teleporting to server:", chosenJob)
     pcall(function()
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, Players.LocalPlayer)
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, player)
     end)
     task.wait(HOP_COOLDOWN)
     isHopping = false
@@ -119,21 +121,15 @@ task.spawn(function()
     lastCheck = tick()
 
     while true do
+        local foundRift = false
         local rendered = workspace:FindFirstChild("Rendered")
-        local foundAnyRift = false
-
         if rendered then
             local riftsFolder = rendered:FindFirstChild("Rifts")
             if riftsFolder then
-                -- Collect rifts to send before hopping
-                local riftsToSend = {}
-
                 for _, rift in ipairs(riftsFolder:GetChildren()) do
                     for _, riftData in ipairs(RIFTS) do
-                        if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) then
-                            
-                            local key = tostring(rift:GetDebugId()) .. "_" .. riftData.Webhook
-                            if alreadyFound[key] then continue end
+                        if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name))
+                           and not alreadyFound[rift] then
 
                             -- Rift details
                             local luckText, timerText, heightText = "N/A", "N/A", "N/A"
@@ -170,47 +166,54 @@ task.spawn(function()
                                 end
                             end)
 
-                            if shouldSendRift(riftData, luckText) then
-                                table.insert(riftsToSend, {rift = rift, riftData = riftData, key = key, luckText = luckText, minutes = minutes, seconds = seconds, heightText = heightText})
-                                foundAnyRift = true
+                            -- Skip if minimum luck not met
+                            if not shouldSendRift(riftData, luckText) then
+                                continue
                             end
+
+                            local formattedEggName = formatEggName(rift.Name)
+                            local expireTimestamp = os.time() + (minutes * 60 + seconds)
+                            local jobId = tostring(game.JobId or "")
+                            local playerCount = #Players:GetPlayers()
+                            local maxPlayers = Players.MaxPlayers or 0
+
+                            local message = {
+                                embeds = {{
+                                    title = formattedEggName .. " Has Been Found 🥚",
+                                    color = 0x00FF00,
+                                    fields = {
+                                        {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
+                                        {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
+                                        {name = "🔗 Quick Join", value = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")", inline = false}
+                                    },
+                                    timestamp = DateTime.now():ToIsoDate()
+                                }}
+                            }
+
+                            -- Send webhook
+                            sendWebhook(riftData.Webhook, message)
+                            print("Webhook sent for:", rift.Name)
+
+                            -- Spam chat 5 times before hopping
+                            for i = 1, 5 do
+                                pcall(function()
+                                    player:Chat("JOIN FOR RIFTS - https://discord.gg/87NMF6H5Vs")
+                                end)
+                                task.wait(0.5)
+                            end
+
+                            alreadyFound[rift] = true
+                            task.delay(300, function() alreadyFound[rift] = nil end)
+
+                            hopServers()
+                            foundRift = true
                         end
                     end
-                end
-
-                -- Send all webhooks for the collected rifts
-                for _, info in ipairs(riftsToSend) do
-                    local formattedEggName = formatEggName(info.rift.Name)
-                    local expireTimestamp = os.time() + (info.minutes * 60 + info.seconds)
-                    local jobId = tostring(game.JobId or "")
-                    local playerCount = #Players:GetPlayers()
-                    local maxPlayers = Players.MaxPlayers or 0
-
-                    local message = {
-                        embeds = {{
-                            title = formattedEggName .. " Has Been Found 🥚",
-                            color = 0x00FF00,
-                            fields = {
-                                {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
-                                {name = "🎲 Rift Info", value = "Luck: " .. info.luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. info.heightText, inline = true},
-                                {name = "🔗 Quick Join", value = "[Click to Join Server](https://www.roblox.com/games/start?placeId=" .. game.PlaceId .. "&jobId=" .. jobId .. ")", inline = false}
-                            },
-                            timestamp = DateTime.now():ToIsoDate()
-                        }}
-                    }
-
-                    sendWebhook(info.riftData.Webhook, message)
-                    print("Webhook sent for:", info.rift.Name, "via", info.riftData.Webhook)
-
-                    alreadyFound[info.key] = true
-                    task.delay(300, function() alreadyFound[info.key] = nil end)
                 end
             end
         end
 
-        if foundAnyRift then
-            hopServers() -- hop only after sending all webhooks
-        elseif (tick() - lastCheck) >= IDLE_HOP_TIME then
+        if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
             hopServers()
             lastCheck = tick()
         end
