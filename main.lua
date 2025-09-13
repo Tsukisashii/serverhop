@@ -119,7 +119,6 @@ end
 -- Function to spam chat using TextChatService safely
 local function sendRiftChatSpam(times, delay, message)
     task.spawn(function()
-        -- Wait until at least one channel exists
         local channel
         repeat
             channel = next(TextChatService.TextChannels:GetChildren())
