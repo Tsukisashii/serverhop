@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join Roblox Server</title>
+    <meta charset="UTF-8">
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const placeId = params.get('placeId');
+        const jobId = params.get('jobId');
+
+        if(placeId && jobId) {
+            // Redirect to Roblox
+            window.location.href = `roblox://experiences/start?placeId=${placeId}&gameInstanceId=${jobId}`;
+        } else {
+            document.body.innerHTML = "Invalid link!";
+        }
+    </script>
+</head>
+<body>
+    Redirecting to Roblox...
+</body>
+</html>
