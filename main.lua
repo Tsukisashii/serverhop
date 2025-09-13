@@ -183,6 +183,12 @@ task.spawn(function()
                                 end
                             end)
 
+                            local expireTimestamp = os.time() + (minutes * 60 + seconds)
+                            -- Skip expired rifts
+                            if expireTimestamp <= os.time() then
+                                continue
+                            end
+
                             pcall(function()
                                 if rift.GetPivot then
                                     heightText = tostring(math.floor(rift:GetPivot().Position.Y)) .. " studs"
@@ -197,7 +203,6 @@ task.spawn(function()
                             end
 
                             local formattedEggName = formatEggName(rift.Name)
-                            local expireTimestamp = os.time() + (minutes * 60 + seconds)
                             local jobId = tostring(game.JobId or "")
                             local playerCount = #Players:GetPlayers()
                             local maxPlayers = Players.MaxPlayers or 0
@@ -218,9 +223,6 @@ task.spawn(function()
                             -- Send webhook
                             sendWebhook(riftData.Webhook, message)
                             print("Webhook sent for:", rift.Name)
-
-                            -- Spam chat using TextChatService before hopping
-                            sendRiftChatSpam(5, 0.5, "JOIN FOR RIFTS - d.gg 87NMF6H5Vs")
 
                             alreadyFound[rift] = true
                             task.delay(300, function() alreadyFound[rift] = nil end)
