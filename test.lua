@@ -62,7 +62,6 @@ local function parseTimer(timerText)
         end
     end
 
-    -- Format: XhYm or Xh or Ym
     local h = tonumber(timerText:match("(%d+)h")) or 0
     local min = tonumber(timerText:match("(%d+)m")) or 0
     local sec = tonumber(timerText:match("(%d+)s")) or 0
@@ -128,7 +127,6 @@ local function hopServers()
 
     isHopping = true
     warn("Teleporting to server:", chosenJob)
-    -- Reset rift data when hopping
     currentServerRifts = {}
     pcall(function()
         TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, player)
@@ -171,11 +169,9 @@ task.spawn(function()
                                     end
                                 end)
 
-                                -- FIX: Always use current/future timestamp for embeds
-                                local secondsLeft = parseTimer(timerText)
-                                if not secondsLeft or secondsLeft < 0 then
-                                    secondsLeft = 0
-                                end
+                                -- Always future/current timestamp
+                                local secondsLeft = parseTimer(timerText) or 0
+                                if secondsLeft < 0 then secondsLeft = 0 end
                                 local expireTimestamp = os.time() + secondsLeft
 
                                 currentServerRifts[rift] = expireTimestamp
@@ -208,9 +204,7 @@ task.spawn(function()
                                 sendWebhook(riftData.Webhook, message)
                                 print("Webhook sent for:", rift.Name, "| Expires:", expireTimestamp)
 
-                                hopServers()
                                 foundRift = true
-                                break
                             end
                         end
                     end
@@ -221,6 +215,10 @@ task.spawn(function()
         if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
             hopServers()
             lastCheck = tick()
+        end
+
+        if foundRift then
+            hopServers() 
         end
 
         task.wait(1)
