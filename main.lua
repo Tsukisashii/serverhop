@@ -18,10 +18,10 @@ local RIFTS = {
 local HOP_COOLDOWN = 5
 local IDLE_HOP_TIME = 5
 local isHopping = false
-local alreadyFound = {} 
 local lastCheck = tick()
 
--- Helpers
+local currentServerRifts = {}
+
 local function formatEggName(name)
     if not name then return "" end
     name = name:gsub("-", " ")
@@ -48,10 +48,8 @@ local function shouldSendRift(riftData, luckText)
     end
 end
 
--- ✅ Fixed Timer Parser
 local function parseTimer(timerText)
     if not timerText or timerText == "" then return 0 end
-
     local firstNum, secondNum = timerText:match("^(%d+):(%d+)$")
     if firstNum and secondNum then
         firstNum = tonumber(firstNum)
@@ -62,21 +60,18 @@ local function parseTimer(timerText)
             return (firstNum * 3600) + (secondNum * 60)
         end
     end
-
     local h, m = timerText:match("(%d+)h"), timerText:match("(%d+)m")
     h = tonumber(h) or 0
     m = tonumber(m) or 0
     if h > 0 or m > 0 then
         return h * 3600 + m * 60
     end
-
     local m2, s = timerText:match("(%d+)%s*m"), timerText:match("(%d+)%s*s")
     m2 = tonumber(m2) or 0
     s = tonumber(s) or 0
     if m2 > 0 or s > 0 then
         return m2 * 60 + s
     end
-
     return 0
 end
 
@@ -132,6 +127,8 @@ local function hopServers()
 
     isHopping = true
     warn("Teleporting to server:", chosenJob)
+    -- Reset rift data when hopping
+    currentServerRifts = {}
     pcall(function()
         TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, player)
     end)
@@ -139,7 +136,6 @@ local function hopServers()
     isHopping = false
 end
 
--- ✅ Main Loop
 task.spawn(function()
     task.wait(2)
     lastCheck = tick()
@@ -151,7 +147,7 @@ task.spawn(function()
             local riftsFolder = rendered:FindFirstChild("Rifts")
             if riftsFolder then
                 for _, rift in ipairs(riftsFolder:GetChildren()) do
-                    if not alreadyFound[rift] then
+                    if not currentServerRifts[rift] then
                         for _, riftData in ipairs(RIFTS) do
                             if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) then
                                 local luckText, timerText, heightText = "N/A", "N/A", "N/A"
@@ -168,7 +164,6 @@ task.spawn(function()
                                                 timerText = gui.Timer.Text or ""
                                             end
                                         end
-                                        -- Dynamic height detection
                                         if displayPart:IsA("BasePart") then
                                             heightText = math.floor(displayPart.Position.Y) .. "m"
                                         end
@@ -179,10 +174,7 @@ task.spawn(function()
                                 if secondsLeft < 0 then secondsLeft = 0 end
                                 local expireTimestamp = os.time() + secondsLeft
 
-                                alreadyFound[rift] = expireTimestamp
-                                task.delay(secondsLeft + 2, function()
-                                    alreadyFound[rift] = nil
-                                end)
+                                currentServerRifts[rift] = expireTimestamp
 
                                 if not shouldSendRift(riftData, luckText) then
                                     continue
@@ -190,8 +182,11 @@ task.spawn(function()
 
                                 local formattedEggName = formatEggName(rift.Name)
                                 local jobId = tostring(game.JobId or "0")
+                                local placeId = tostring(game.PlaceId or "0")
                                 local playerCount = #Players:GetPlayers()
                                 local maxPlayers = Players.MaxPlayers or 0
+
+                                local redirectURL = "https://serverhop-jins-projects-240eae56.vercel.app/?placeId=" .. placeId .. "&gameInstanceId=" .. jobId
 
                                 local message = {
                                     embeds = {{
@@ -200,7 +195,7 @@ task.spawn(function()
                                         fields = {
                                             {name = "🌍 Server Info", value = "Players Online: " .. playerCount .. "/" .. maxPlayers, inline = true},
                                             {name = "🎲 Rift Info", value = "Luck: " .. luckText .. "\nExpires: <t:" .. expireTimestamp .. ":R>\nHeight: " .. heightText, inline = true},
-                                            {name = "🔗 Quick Join", value = "[Click to Join Server](roblox://experiences/start?placeId=" .. game.PlaceId .. "&gameInstanceId=" .. jobId .. ")", inline = false}
+                                            {name = "🔗 Quick Join", value = "[Click to Join Server](" .. redirectURL .. ")", inline = false}
                                         },
                                         timestamp = DateTime.now():ToIsoDate()
                                     }}
