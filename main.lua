@@ -47,27 +47,23 @@ local function shouldSendRift(riftData, luckText)
     end
 end
 
--- 🔧 FIXED parseTimer
+-- 🔧 parseTimer handles multiple formats safely
 local function parseTimer(timerText)
     if not timerText or timerText == "" then return 0 end
     local s = timerText:lower():gsub("^%s+", ""):gsub("%s+$", "")
 
-    -- if it literally says "ago", it's already expired
     if s:find("ago") then return 0 end
 
-    -- HH:MM:SS
     local h,m,sec = s:match("(%d+):(%d+):(%d+)")
     if h and m and sec then
         return tonumber(h)*3600 + tonumber(m)*60 + tonumber(sec)
     end
 
-    -- MM:SS
     local mm,ss = s:match("(%d+):(%d+)")
     if mm and ss then
         return tonumber(mm)*60 + tonumber(ss)
     end
 
-    -- e.g. "1h 2m 3s", "2m 10s", "59s"
     local hours = tonumber(s:match("(%d+)h")) or 0
     local mins  = tonumber(s:match("(%d+)m")) or 0
     local secs  = tonumber(s:match("(%d+)s")) or 0
@@ -75,7 +71,6 @@ local function parseTimer(timerText)
         return hours*3600 + mins*60 + secs
     end
 
-    -- fallback: just digits = seconds
     local digits = tonumber(s:match("(%d+)"))
     if digits then return digits end
 
@@ -192,10 +187,11 @@ task.spawn(function()
             end)
 
             local secondsLeft = parseTimer(timerText or "") or 0
-            -- 🔧 clamp check: ignore if < 5s to avoid "ago" embeds
+            -- 🔧 clamp: ignore if < 5s left to avoid "ago"
             if secondsLeft < 5 then continue end
 
-            local expireTimestamp = os.time() + secondsLeft
+            -- ✅ FIX: use DateTime.now().UnixTimestamp (not os.time)
+            local expireTimestamp = DateTime.now().UnixTimestamp + secondsLeft
             currentServerRifts[riftId] = expireTimestamp
             local expireDiscordTimestamp = "<t:" .. expireTimestamp .. ":R>"
 
