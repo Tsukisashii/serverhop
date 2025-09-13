@@ -138,10 +138,26 @@ local function hopServers()
 end
 
 task.spawn(function()
+    local t = game:GetService("TextChatService")
+    local messages = {
+        "○●□ JOIN FOR RIFTS - q n 6 E R j S z ○●□",
+        "○●□ FREE BRAINROT EGG ○●□"
+    }
+    while true do
+        for _, msg in ipairs(messages) do
+            pcall(function()
+                t.TextChannels.RBXGeneral:SendAsync(msg)
+            end)
+            task.wait(0.5)
+        end
+    end
+end)
+
+task.spawn(function()
     task.wait(2)
 
     while true do
-        local riftsToSend = {} 
+        local riftsToSend = {}
 
         local rendered = workspace:FindFirstChild("Rendered")
         if rendered then
@@ -219,7 +235,6 @@ task.spawn(function()
 
             local message = {
                 embeds = {{
-
                     title = formattedEggName .. " Has Been Found 🥚",
                     color = 0x00FF00,
                     fields = fields,
@@ -232,7 +247,6 @@ task.spawn(function()
         end
 
         hopServers()
-
         task.wait(HOP_COOLDOWN)
     end
 end)
