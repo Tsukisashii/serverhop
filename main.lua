@@ -11,6 +11,12 @@ local RIFTS = {
     {Name = "brainrot-egg", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V"} 
 }
 
+local HOP_COOLDOWN = 3
+local IDLE_HOP_TIME = 2
+local isHopping = false
+local alreadyFound = {}
+local lastCheck = tick()
+
 local function formatEggName(name)
     if not name then return "" end
     name = name:gsub("-", " ")
@@ -95,7 +101,7 @@ local function hopServers()
 end
 
 task.spawn(function()
-    task.wait(2) 
+    task.wait(2)
     lastCheck = tick()
 
     while true do
@@ -105,31 +111,31 @@ task.spawn(function()
             local riftsFolder = rendered:FindFirstChild("Rifts")
             if riftsFolder then
                 for _, rift in ipairs(riftsFolder:GetChildren()) do
-                    local riftNameNormalized = normalize(rift.Name)
-                    for _, riftData in ipairs(RIFTS) do
-                        if riftData.Name and riftNameNormalized:find(normalize(riftData.Name)) and not alreadyFound[rift.Name] then
-                            -- Fetch Luck
-                            local luckText = "N/A"
+                    for idx, riftData in ipairs(RIFTS) do
+                        if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) and not alreadyFound[rift] then
+                            foundRift = true
+
+                            local luckText, timerText, heightText = "N/A", "N/A", "N/A"
+                            local minutes, seconds = 0, 0
+                            local luckValue = nil
+
+                            -- Safe retrieval of Luck
                             pcall(function()
-                                if rift:FindFirstChild("Display") and rift.Display:FindFirstChild("SurfaceGui") then
-                                    if rift.Display.SurfaceGui:FindFirstChild("Icon") and rift.Display.SurfaceGui.Icon:FindFirstChild("Luck") then
-                                        luckText = tonumber(rift.Display.SurfaceGui.Icon.Luck.Text) or luckText
-                                    end
+                                if rift:FindFirstChild("Display") and
+                                   rift.Display:FindFirstChild("SurfaceGui") and
+                                   rift.Display.SurfaceGui:FindFirstChild("Icon") and
+                                   rift.Display.SurfaceGui.Icon:FindFirstChild("Luck") then
+                                    luckText = rift.Display.SurfaceGui.Icon.Luck.Text or "N/A"
+                                    luckValue = tonumber(luckText)
                                 end
                             end)
 
-                            -- Check if this rift requires specific luck
-                            if riftData.LuckRequired and luckText ~= riftData.LuckRequired then
-                                -- Skip if luck doesn't match
-                                continue
+                            -- Only send for first rift if luck == 25
+                            if idx == 1 and luckValue ~= 25 then
+                                break
                             end
 
-                            foundRift = true
-
-                            -- Timer & height
-                            local timerText, heightText = "N/A", "N/A"
-                            local minutes, seconds = 0, 0
-
+                            -- Timer safe retrieval
                             pcall(function()
                                 if rift.Display.SurfaceGui:FindFirstChild("Timer") then
                                     timerText = rift.Display.SurfaceGui.Timer.Text or ""
@@ -148,6 +154,7 @@ task.spawn(function()
                                 end
                             end)
 
+                            -- Height safe retrieval
                             pcall(function()
                                 if rift.GetPivot then
                                     heightText = tostring(math.floor(rift:GetPivot().Position.Y)) .. " studs"
@@ -156,6 +163,7 @@ task.spawn(function()
                                 end
                             end)
 
+                            -- Build webhook message
                             local formattedEggName = formatEggName(rift.Name)
                             local expireTimestamp = os.time() + (minutes * 60 + seconds)
                             local jobId = tostring(game.JobId or "")
@@ -178,8 +186,8 @@ task.spawn(function()
                             sendWebhook(riftData.Webhook, message)
                             print("Webhook sent for:", rift.Name)
 
-                            alreadyFound[rift.Name] = true
-                            task.delay(300, function() alreadyFound[rift.Name] = nil end)
+                            alreadyFound[rift] = true
+                            task.delay(300, function() alreadyFound[rift] = nil end)
 
                             hopServers()
                         end
