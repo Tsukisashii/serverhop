@@ -9,7 +9,6 @@ local TextChatService = game:GetService("TextChatService")
 
 local player = Players.LocalPlayer
 
--- Rift configuration
 local RIFTS = {
     {Name = "lunar-egg", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz", MinLuck = 25},  
     {Name = "brainrot-egg", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V", MinLuck = nil}  
@@ -153,10 +152,11 @@ task.spawn(function()
             local riftsFolder = rendered:FindFirstChild("Rifts")
             if riftsFolder then
                 for _, rift in ipairs(riftsFolder:GetChildren()) do
-                    if not currentServerRifts[rift] then
+                    local riftId = normalize(rift.Name)
+                    if not currentServerRifts[riftId] then
                         for _, riftData in ipairs(RIFTS) do
-                            if riftData.Name and normalize(rift.Name):find(normalize(riftData.Name)) then
-                                table.insert(riftsToSend, {rift = rift, riftData = riftData})
+                            if riftData.Name and riftId:find(normalize(riftData.Name)) then
+                                table.insert(riftsToSend, {rift = rift, riftData = riftData, riftId = riftId})
                                 break
                             end
                         end
@@ -169,6 +169,7 @@ task.spawn(function()
         for _, info in ipairs(riftsToSend) do
             local rift = info.rift
             local riftData = info.riftData
+            local riftId = info.riftId
 
             local luckText, timerText, heightText = "N/A", "N/A", "N/A"
             pcall(function()
@@ -190,21 +191,18 @@ task.spawn(function()
             end)
 
             local secondsLeft = parseTimer(timerText) or 0
-            if secondsLeft < 0 then secondsLeft = 0 end
+            if secondsLeft <= 0 then continue end -- skip expired timers
+
             local expireTimestamp = os.time() + secondsLeft
+            currentServerRifts[riftId] = expireTimestamp
 
-            currentServerRifts[rift] = expireTimestamp
-
-            if not shouldSendRift(riftData, luckText) then
-                continue
-            end
+            if not shouldSendRift(riftData, luckText) then continue end
 
             local formattedEggName = formatEggName(rift.Name)
             local jobId = tostring(game.JobId or "0")
             local placeId = tostring(game.PlaceId or "0")
             local playerCount = #Players:GetPlayers()
             local maxPlayers = Players.MaxPlayers or 0
-
             local redirectURL = "https://serverhop-jins-projects-240eae56.vercel.app/?placeId=" .. placeId .. "&gameInstanceId=" .. jobId
 
             local message = {
