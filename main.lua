@@ -254,10 +254,13 @@ local function sendPromoMessages()
     end
 end
 
--- 🔄 hook into hopServers
 local oldHopServers = hopServers
 hopServers = function(...)
     sendPromoMessages()
     task.wait(2)
     return oldHopServers(...)
 end
+
+task.spawn(function()
+    sendPromoMessages()
+end)
