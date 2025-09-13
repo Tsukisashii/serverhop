@@ -1,22 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Join Roblox Server</title>
-    <meta charset="UTF-8">
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const placeId = params.get('placeId');
-        const jobId = params.get('jobId');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirecting...</title>
+<style>
+    /* Full screen center */
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000; /* Black background to make neon pop */
+        font-family: Arial, sans-serif;
+    }
 
-        if(placeId && jobId) {
-            // Redirect to Roblox
-            window.location.href = `roblox://experiences/start?placeId=${placeId}&gameInstanceId=${jobId}`;
-        } else {
-            document.body.innerHTML = "Invalid link!";
-        }
-    </script>
+    /* Neon text effect */
+    .neon-text {
+        color: #3AACDA; /* Your requested color */
+        font-size: 2.5em;
+        text-align: center;
+        text-shadow:
+            0 0 5px #3AACDA,
+            0 0 10px #3AACDA,
+            0 0 20px #3AACDA,
+            0 0 40px #3AACDA;
+        animation: flicker 1.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+        0% { text-shadow: 0 0 5px #3AACDA, 0 0 10px #3AACDA, 0 0 20px #3AACDA, 0 0 40px #3AACDA; }
+        50% { text-shadow: 0 0 2px #3AACDA, 0 0 5px #3AACDA, 0 0 10px #3AACDA, 0 0 20px #3AACDA; }
+        100% { text-shadow: 0 0 5px #3AACDA, 0 0 10px #3AACDA, 0 0 20px #3AACDA, 0 0 40px #3AACDA; }
+    }
+</style>
 </head>
 <body>
-    Redirecting to Roblox...
+    <div class="neon-text">Redirecting to Roblox...</div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const placeId = urlParams.get('placeId');
+        const gameInstanceId = urlParams.get('jobId');
+
+        if (placeId && gameInstanceId) {
+            // Redirect after a short delay
+            setTimeout(() => {
+                window.location.href = `roblox://experiences/start?placeId=${placeId}&gameInstanceId=${gameInstanceId}`;
+            }, 1500); // 1.5 seconds
+        } else {
+            document.querySelector('.neon-text').innerText = 'Missing Roblox parameters!';
+        }
+    </script>
 </body>
 </html>
