@@ -47,23 +47,33 @@ local function shouldSendRift(riftData, luckText)
     end
 end
 
--- Robust timer parsing function
+-- ✅ Improved timer parsing (never returns nil)
 local function parseTimer(timerText)
-    if not timerText or timerText == "" then return nil end
+    if not timerText or timerText == "" then return 0 end
 
-    -- Try MM:SS first
+    -- Try MM:SS
     local mm, ss = timerText:match("(%d+):(%d+)")
     if mm and ss then
         return tonumber(mm) * 60 + tonumber(ss)
     end
 
-    -- Try "X m Y s" format
-    local m, s = timerText:match("(%d+)%s*m"), timerText:match("(%d+)%s*s")
+    -- Try Xh Ym
+    local h, m = timerText:match("(%d+)h"), timerText:match("(%d+)m")
+    h = tonumber(h) or 0
     m = tonumber(m) or 0
-    s = tonumber(s) or 0
-    if m == 0 and s == 0 then return nil end
+    if h > 0 or m > 0 then
+        return h * 3600 + m * 60
+    end
 
-    return m * 60 + s
+    -- Try Xm Ys
+    local m2, s = timerText:match("(%d+)%s*m"), timerText:match("(%d+)%s*s")
+    m2 = tonumber(m2) or 0
+    s = tonumber(s) or 0
+    if m2 > 0 or s > 0 then
+        return m2 * 60 + s
+    end
+
+    return 0 -- fallback
 end
 
 -- Webhook sender
@@ -189,7 +199,7 @@ task.spawn(function()
                                     end
                                 end)
 
-                                -- Parse timer safely
+                                -- ✅ Parse timer safely (never nil)
                                 local secondsLeft = parseTimer(timerText)
                                 if secondsLeft < 0 then secondsLeft = 0 end
                                 local expireTimestamp = os.time() + secondsLeft
