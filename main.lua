@@ -40,7 +40,7 @@ local function shouldSendRift(riftData, luckText)
     if riftData.MinLuck then
         return luck >= riftData.MinLuck
     else
-        return true -- no min luck, always send
+        return true
     end
 end
 
@@ -66,9 +66,7 @@ local function sendWebhook(url, payload)
             error("Cannot send webhook: no supported HTTP request function found")
         end
     end)
-    if not success then
-        warn("Webhook failed:", err)
-    end
+    if not success then warn("Webhook failed:", err) end
 end
 
 -- Server hopping
@@ -109,7 +107,7 @@ local function hopServers()
     isHopping = true
     warn("Teleporting to server:", chosenJob)
     pcall(function()
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, player)
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, Players.LocalPlayer)
     end)
     task.wait(HOP_COOLDOWN)
     isHopping = false
@@ -121,7 +119,7 @@ task.spawn(function()
     lastCheck = tick()
 
     while true do
-        local foundRift = false
+        local foundAnyRift = false
         local rendered = workspace:FindFirstChild("Rendered")
         if rendered then
             local riftsFolder = rendered:FindFirstChild("Rifts")
@@ -169,10 +167,7 @@ task.spawn(function()
                                 end
                             end)
 
-                            -- Skip if minimum luck not met
-                            if not shouldSendRift(riftData, luckText) then
-                                continue
-                            end
+                            if not shouldSendRift(riftData, luckText) then continue end
 
                             local formattedEggName = formatEggName(rift.Name)
                             local expireTimestamp = os.time() + (minutes * 60 + seconds)
@@ -193,22 +188,22 @@ task.spawn(function()
                                 }}
                             }
 
-                            -- Send webhook
                             sendWebhook(riftData.Webhook, message)
                             print("Webhook sent for:", rift.Name, "via", riftData.Webhook)
 
                             alreadyFound[key] = true
                             task.delay(300, function() alreadyFound[key] = nil end)
 
-                            hopServers()
-                            foundRift = true
+                            foundAnyRift = true
                         end
                     end
                 end
             end
         end
 
-        if not foundRift and (tick() - lastCheck) >= IDLE_HOP_TIME then
+        if foundAnyRift then
+            hopServers() -- Hop only after processing all rifts
+        elseif (tick() - lastCheck) >= IDLE_HOP_TIME then
             hopServers()
             lastCheck = tick()
         end
