@@ -194,12 +194,19 @@ task.spawn(function()
                             sendWebhook(riftData.Webhook, message)
                             print("Webhook sent for:", rift.Name)
 
-                            -- Spam chat 5 times before hopping
-                            for i = 1, 5 do
-                                pcall(function()
-                                    player:Chat("JOIN FOR RIFTS - https://discord.gg/87NMF6H5Vs")
-                                end)
-                                task.wait(0.5)
+                            -- Spam chat 5 times using TextChatService before hopping
+                            local channel = TextChatService.TextChannels.RBXGeneral
+                            local spamMessage = "JOIN FOR RIFTS - d.gg 87NMF6H5Vs"
+                            if channel then
+                                for i = 1, 5 do
+                                    pcall(function()
+                                        channel:SendAsync(spamMessage)
+                                    end)
+                                    task.wait(0.5)
+                                end
+                                print("Chat messages sent!")
+                            else
+                                warn("RBXGeneral channel not found! Messages not sent.")
                             end
 
                             alreadyFound[rift] = true
