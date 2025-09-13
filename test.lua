@@ -10,7 +10,7 @@ local player = Players.LocalPlayer
 -- Rift configuration
 local RIFTS = {
     {Name = "lunar-egg", Webhook = "https://discord.com/api/webhooks/1411629941178765365/k0Tw3CWiuZ935oPnQ4GnofN3xcWAc7q3KWg41_SwqtkOlyNotA5nNXzPjf1XVg1zcu4h", MinLuck = 25},  
-    {Name = "spikey-egg", Webhook = "https://discord.com/api/webhooks/1411629941178765365/k0Tw3CWiuZ935oPnQ4GnofN3xcWAc7q3KWg41_SwqtkOlyNotA5nNXzPjf1XVg1zcu4h", MinLuck = nil}  
+    {Name = "spikey-egg", Webhook = "https://discord.com/api/webhooks/1409541809662857347/PDZx8xT5PoT00LY2EMFtPVxf4JBjtEu4PnoUN5cBMfnpjNipHym67vw3DoyPAbJXVt7j", MinLuck = nil}  
 }
 
 local HOP_COOLDOWN = 5
