@@ -47,6 +47,25 @@ local function shouldSendRift(riftData, luckText)
     end
 end
 
+-- Robust timer parsing function
+local function parseTimer(timerText)
+    if not timerText or timerText == "" then return nil end
+
+    -- Try MM:SS first
+    local mm, ss = timerText:match("(%d+):(%d+)")
+    if mm and ss then
+        return tonumber(mm) * 60 + tonumber(ss)
+    end
+
+    -- Try "X m Y s" format
+    local m, s = timerText:match("(%d+)%s*m"), timerText:match("(%d+)%s*s")
+    m = tonumber(m) or 0
+    s = tonumber(s) or 0
+    if m == 0 and s == 0 then return nil end
+
+    return m * 60 + s
+end
+
 -- Webhook sender
 local function sendWebhook(url, payload)
     local body = HttpService:JSONEncode(payload)
@@ -118,7 +137,7 @@ local function hopServers()
     isHopping = false
 end
 
--- Function to spam chat using TextChatService safely
+-- Chat spam
 local function sendRiftChatSpam(times, delay, message)
     task.spawn(function()
         local channel
@@ -158,7 +177,6 @@ task.spawn(function()
 
                             -- Rift details
                             local luckText, timerText, heightText = "N/A", "N/A", "N/A"
-                            local minutes, seconds = 0, 0
 
                             pcall(function()
                                 if rift:FindFirstChild("Display") and rift.Display:FindFirstChild("SurfaceGui") then
@@ -171,23 +189,13 @@ task.spawn(function()
                                 end
                             end)
 
-                            pcall(function()
-                                minutes = tonumber(timerText:match("(%d+) ?m")) or 0
-                                seconds = tonumber(timerText:match("(%d+) ?s")) or 0
-                                if minutes == 0 and seconds == 0 then
-                                    local mm, ss = timerText:match("(%d+):(%d+)")
-                                    if mm and ss then
-                                        minutes = tonumber(mm) or 0
-                                        seconds = tonumber(ss) or 0
-                                    end
-                                end
-                            end)
-
-                            local expireTimestamp = os.time() + (minutes * 60 + seconds)
-                            -- Skip expired rifts
-                            if expireTimestamp <= os.time() then
-                                continue
+                            -- Parse timer safely
+                            local secondsLeft = parseTimer(timerText)
+                            if not secondsLeft or secondsLeft <= 0 then
+                                continue -- skip expired or unreadable rifts
                             end
+
+                            local expireTimestamp = os.time() + secondsLeft
 
                             pcall(function()
                                 if rift.GetPivot then
