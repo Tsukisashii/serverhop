@@ -14,7 +14,7 @@ local RIFTS = {
     {Name = "brainrot-egg", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V", MinLuck = nil}  
 }
 
-ocal HOP_COOLDOWN = 5
+local HOP_COOLDOWN = 5
 local IDLE_HOP_TIME = 5
 local isHopping = false
 local lastCheck = tick()
