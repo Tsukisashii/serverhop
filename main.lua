@@ -153,7 +153,7 @@ local function hopServers()
 end
 
 local function getUTCTime()
-    return os.time(os.date("!*t")) -- always UTC
+    return os.time(os.date("!*t")) 
 end
 
 task.spawn(function()
