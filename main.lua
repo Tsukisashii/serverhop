@@ -10,7 +10,7 @@ local player = Players.LocalPlayer
 local function GetBountyEgg()
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local RiftsData, EggsData
-    
+
     local success = pcall(function()
         RiftsData = require(ReplicatedStorage.Shared.Data.Rifts)
         EggsData = require(ReplicatedStorage.Shared.Data.Eggs)
@@ -18,15 +18,28 @@ local function GetBountyEgg()
     if not success then return nil end
 
     local possibleEggs = { "common-egg" }
+
     for _, riftInfo in pairs(RiftsData) do
         if riftInfo.Type == "Egg" then
             local eggData = EggsData[riftInfo.Egg]
             if eggData and eggData.World and eggData.Island then
-                local formatted = riftInfo.Egg:lower():gsub("%s+", "-")
+                local formatted = riftInfo.Egg
+                    :lower()
+                    :gsub("%s+", "-")
+                    :gsub("[^%w%-]", "") 
                 table.insert(possibleEggs, formatted)
             end
         end
     end
+
+    local secondsInDay = 86400
+    local dailySeed = math.floor(os.time() / secondsInDay) - 1
+    local rng_today = Random.new(dailySeed)
+    local eggIndex = rng_today:NextInteger(1, #possibleEggs)
+
+    return possibleEggs[eggIndex]
+end
+
 
     local secondsInDay = 86400
     local dailySeed = math.floor(os.time() / secondsInDay) - 1
