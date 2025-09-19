@@ -7,7 +7,10 @@ local TextChatService = game:GetService("TextChatService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
-local SecretBounty = require(ReplicatedStorage.Shared.Utils.Stats.SecretBountyUtil)
+local SecretBounty
+pcall(function()
+    SecretBounty = require(ReplicatedStorage.Shared.Utils.Stats.SecretBountyUtil)
+end)
 
 local RIFTS = {
     {Name = "", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz", MinLuck = 25},  
@@ -21,10 +24,18 @@ local lastCheck = tick()
 
 local currentServerRifts = {}
 
-local SecretBounty = nil
-pcall(function()
-    SecretBounty = require(ReplicatedStorage.Shared.Utils.Stats.SecretBountyUtil)
-end)
+local function normalize(name)
+    if not name then return "" end
+    return name:lower():gsub("%s+", "-"):gsub("[^%w%-]", "")
+end
+
+local function formatEggName(name)
+    if not name then return "" end
+    name = name:gsub("-", " ")
+    return name:gsub("(%a)([%w]*)", function(first, rest)
+        return first:upper() .. rest:lower()
+    end)
+end
 
 task.spawn(function()
     task.wait(2)
@@ -35,18 +46,15 @@ task.spawn(function()
         if SecretBounty and type(SecretBounty.Get) == "function" then
             local success, info = pcall(SecretBounty.Get, SecretBounty)
             if success and info and info.Egg then
-                bountyEgg = info.Egg
+                bountyEgg = normalize(info.Egg)
             end
         end
 
-        local normalizedBounty = (bountyEgg or ""):lower():gsub("%W", "")
         local riftsFolder = workspace:FindFirstChild("Rendered") and workspace.Rendered:FindFirstChild("Rifts")
         local isActive = false
-
-        if riftsFolder then
+        if riftsFolder and bountyEgg ~= "" then
             for _, rift in ipairs(riftsFolder:GetChildren()) do
-                local riftNormalized = (rift.Name or ""):lower():gsub("%W", "")
-                if riftNormalized:find(normalizedBounty) then
+                if normalize(rift.Name):find(bountyEgg) then
                     isActive = true
                     break
                 end
@@ -54,7 +62,6 @@ task.spawn(function()
         end
 
         RIFTS[1].Name = isActive and bountyEgg or ""
-
         task.wait(1)
     end
 end)
