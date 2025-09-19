@@ -7,13 +7,22 @@ local TextChatService = game:GetService("TextChatService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
-
 local SecretBounty = require(ReplicatedStorage.Shared.Utils.Stats.SecretBountyUtil)
 
 local RIFTS = {
     {Name = "", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz", MinLuck = 25},  
     {Name = "brainrot-egg", Webhook = "https://discord.com/api/webhooks/1415718364055077025/_cblNWmsQS35E-1xCz-CQWYMbiKm4aFncF_0ngpDsavEPFPbfL5QUE1nP7kmk2xWzy1V", MinLuck = nil}  
 }
+
+task.spawn(function()
+    local bountyInfo
+    repeat
+        task.wait(0.5)
+        bountyInfo = SecretBounty:Get()
+    until bountyInfo and bountyInfo.Egg
+
+    RIFTS[1].Name = bountyInfo.Egg
+end)
 
 local HOP_COOLDOWN = 8
 local IDLE_HOP_TIME = 5
