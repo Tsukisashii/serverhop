@@ -17,6 +17,7 @@ local RIFTS = {
 task.spawn(function()
     while true do
         local bountyEgg = nil
+
         local success, bountyInfo = pcall(function()
             return SecretBounty:Get()
         end)
