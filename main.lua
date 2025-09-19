@@ -7,7 +7,7 @@ local TextChatService = game:GetService("TextChatService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
-local SecretBounty = require(ReplicatedStorage.Shared.Stats.SecretBountyUtil)
+local SecretBounty = require(ReplicatedStorage.Shared.Utils.Stats.SecretBountyUtil)
 
 local RIFTS = {
     {Name = "", Webhook = "https://discord.com/api/webhooks/1415712364007002143/p80C7QElE5O1EEDo-0IKJA5cGiG31O8qlEBQ1dgmibyOtO2Fr228CK7-JQiM2vpLb8Mz", MinLuck = 25},  
