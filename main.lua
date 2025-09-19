@@ -17,11 +17,12 @@ local RIFTS = {
 task.spawn(function()
     while true do
         local bountyEgg = nil
-        local success, result = pcall(function()
-            return SecretBounty.Get().Egg
+        local success, bountyInfo = pcall(function()
+            return SecretBounty:Get()
         end)
-        if success then
-            bountyEgg = result
+
+        if success and bountyInfo and type(bountyInfo) == "table" then
+            bountyEgg = bountyInfo.Egg
         end
 
         local riftsFolder = workspace:FindFirstChild("Rendered") and workspace.Rendered:FindFirstChild("Rifts")
