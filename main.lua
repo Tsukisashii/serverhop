@@ -9,11 +9,16 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 local SecretBounty
 pcall(function()
-    SecretBounty = require(ReplicatedStorage.Shared.Utils.Stats.SecretBountyUtil)
+    if ReplicatedStorage:FindFirstChild("Shared")
+        and ReplicatedStorage.Shared:FindFirstChild("Utils")
+        and ReplicatedStorage.Shared.Utils:FindFirstChild("Stats")
+        and ReplicatedStorage.Shared.Utils.Stats:FindFirstChild("SecretBountyUtil") then
+        SecretBounty = require(ReplicatedStorage.Shared.Utils.Stats.SecretBountyUtil)
+    end
 end)
 
 local function getSecretBounty()
-    if SecretBounty and type(SecretBounty.Get) == "function" then
+    if SecretBounty and typeof(SecretBounty.Get) == "function" then
         local success, info = pcall(function()
             return SecretBounty:Get()
         end)
