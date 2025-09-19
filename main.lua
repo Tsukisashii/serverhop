@@ -28,14 +28,14 @@ task.spawn(function()
     while true do
         local bountyInfo = SecretBounty:Get()
         local bountyEgg = bountyInfo and bountyInfo.Egg or ""
-        local normalizedBounty = (bountyEgg or ""):lower():gsub("%W", "")  -- normalize for comparison
+        local normalizedBounty = (bountyEgg or ""):lower():gsub("%W", "")
 
         local riftsFolder = workspace:FindFirstChild("Rendered") and workspace.Rendered:FindFirstChild("Rifts")
         local isActive = false
 
         if riftsFolder then
             for _, rift in ipairs(riftsFolder:GetChildren()) do
-                local riftNormalized = (rift.Name or ""):lower():gsub("%W", "") -- normalize in-game rift names
+                local riftNormalized = (rift.Name or ""):lower():gsub("%W", "")
                 if riftNormalized:find(normalizedBounty) then
                     isActive = true
                     break
