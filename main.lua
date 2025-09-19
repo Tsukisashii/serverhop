@@ -16,13 +16,18 @@ local RIFTS = {
 
 task.spawn(function()
     while true do
-        local bountyInfo = SecretBounty.Get()
-        local bountyEgg = (bountyInfo and bountyInfo.Egg) or ""
+        local bountyEgg = nil
+        local success, result = pcall(function()
+            return SecretBounty.Get().Egg
+        end)
+        if success then
+            bountyEgg = result
+        end
 
         local riftsFolder = workspace:FindFirstChild("Rendered") and workspace.Rendered:FindFirstChild("Rifts")
         local isActive = false
 
-        if bountyEgg ~= "" and riftsFolder then
+        if bountyEgg and bountyEgg ~= "" and riftsFolder then
             for _, rift in ipairs(riftsFolder:GetChildren()) do
                 if (rift.Name:lower() or ""):find(bountyEgg:lower()) then
                     isActive = true
@@ -40,6 +45,7 @@ task.spawn(function()
         task.wait(1)
     end
 end)
+
 
 local HOP_COOLDOWN = 8
 local IDLE_HOP_TIME = 5
