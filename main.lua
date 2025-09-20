@@ -157,11 +157,17 @@ local function hopServers()
     end
 
     isHopping = true
+
+    local staggerDelay = math.random(2, 5)
+    warn("Waiting " .. staggerDelay .. "s before teleporting to server:", chosenJob)
+    task.wait(staggerDelay)
+
     warn("Teleporting to server:", chosenJob)
     currentServerRifts = {}
     pcall(function()
         TeleportService:TeleportToPlaceInstance(game.PlaceId, chosenJob, player)
     end)
+
     task.wait(HOP_COOLDOWN)
     isHopping = false
 end
