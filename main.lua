@@ -44,7 +44,7 @@ task.spawn(function()
             pcall(function()
                 TextChatService.TextChannels.RBXGeneral:SendAsync(msg)
             end)
-            task.wait(1)
+            task.wait(3)
         end
     end
 end)
